@@ -10,9 +10,9 @@ package com.pblabs.engine.core
 {
     /**
      * Minimal interface required by SimplePriorityQueue.
-     * 
+     *
      * <p>Items are prioritized so that the highest priority is returned first.</p>
-     * 
+     *
      * @see SimplePriorityQueue
      */
     public interface IPrioritizable

@@ -10,8 +10,9 @@ package com.pblabs.animation
 {
     import com.pblabs.engine.components.AnimatedComponent;
     import com.pblabs.engine.entity.PropertyReference;
+
     import flash.utils.Dictionary;
-	
+
     /**
      * Component for animating any value on its owner.
      */
@@ -34,7 +35,7 @@ package com.pblabs.animation
          * is registered.
          */
         public var defaultAnimation:String = "Idle";
-		
+
         /**
          * A reference to the property that will be animated.
          */
@@ -42,14 +43,14 @@ package com.pblabs.animation
 
         private var _currentAnimation:Animator = null;
 
-		/**
+        /**
          * @inheritDoc
          */
         override public function onFrame(elapsed:Number):void
         {
             if (_currentAnimation)
             {
-                _currentAnimation.animate(elapsed);                               
+                _currentAnimation.animate(elapsed);
                 owner.setProperty(reference, _currentAnimation.currentValue);
             }
         }
@@ -64,15 +65,21 @@ package com.pblabs.animation
          */
         public function play(animation:String, startValue:* = null):void
         {
-        	if (_currentAnimation && _currentAnimation.isAnimating)
-        		   _currentAnimation.stop();
-        	
+            if (_currentAnimation && _currentAnimation.isAnimating)
+            {
+                _currentAnimation.stop();
+            }
+
             _currentAnimation = animations[animation];
             if (!_currentAnimation)
+            {
                 return;
+            }
 
             if (startValue)
+            {
                 _currentAnimation.startValue = startValue;
+            }
 
             _currentAnimation.reset();
             _currentAnimation.play();
@@ -84,7 +91,9 @@ package com.pblabs.animation
         override protected function onReset():void
         {
             if (!autoPlay || _currentAnimation)
+            {
                 return;
+            }
 
             play(defaultAnimation);
         }

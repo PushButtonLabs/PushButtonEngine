@@ -6,19 +6,19 @@
  *
  * How to use:
  *
- *	addChild( new Stats() );
+ *    addChild( new Stats() );
  *
  * version log:
  *
- *	08.12.14		1.4		Mr.doob			+ Code optimisations and version info on MOUSE_OVER
- *	08.07.12		1.3		Mr.doob			+ Some speed and code optimisations
- *	08.02.15		1.2		Mr.doob			+ Class renamed to Stats (previously FPS)
- *	08.01.05		1.2		Mr.doob			+ Click changes the fps of flash (half up increases,
- *											  half down decreases)
- *	08.01.04		1.1		Mr.doob and Theo	+ Log shape for MEM
- *											+ More room for MS
- *											+ Shameless ripoff of Alternativa's FPS look :P
- * 	07.12.13		1.0		Mr.doob			+ First version
+ *    08.12.14        1.4        Mr.doob            + Code optimisations and version info on MOUSE_OVER
+ *    08.07.12        1.3        Mr.doob            + Some speed and code optimisations
+ *    08.02.15        1.2        Mr.doob            + Class renamed to Stats (previously FPS)
+ *    08.01.05        1.2        Mr.doob            + Click changes the fps of flash (half up increases,
+ *                                              half down decreases)
+ *    08.01.04        1.1        Mr.doob and Theo    + Log shape for MEM
+ *                                            + More room for MS
+ *                                            + Shameless ripoff of Alternativa's FPS look :P
+ *     07.12.13        1.0        Mr.doob            + First version
  **/
 
 package com.pblabs.engine.debug
@@ -34,7 +34,7 @@ package com.pblabs.engine.debug
     import flash.text.TextField;
     import flash.text.TextFormat;
     import flash.utils.getTimer;
-    
+
     public class Stats extends Sprite
     {
         public function Stats()
@@ -140,7 +140,9 @@ package com.pblabs.engine.debug
 
                 var fpsGraph:int;
                 if (stage)
+                {
                     fpsGraph = Math.min(50, 50 / stage.frameRate * fps);
+                }
                 var memGraph:Number = Math.min(50, Math.sqrt(Math.sqrt(mem * 5000))) - 2;
 
                 graph.scroll(1, 0);
@@ -149,15 +151,24 @@ package com.pblabs.engine.debug
 
                 // Do a vertical line if the time was over 100ms
                 if (timer - ms > 100)
-                    for (var i:int = 0; i < graph.height; i++)
+                {
+                    for (var i:int = 0;
+                         i < graph.height;
+                         i++
+                            )
+                    {
                         graph.setPixel32(0, graph.height - i, 0xFF0000);
+                    }
+                }
 
                 graph.setPixel32(0, graph.height - fpsGraph, 0xFFFF00);
                 graph.setPixel32(0, graph.height - ((timer - ms) >> 1), 0x00FF00);
                 graph.setPixel32(0, graph.height - memGraph, 0x00FFFF);
 
                 if (stage)
+                {
                     fpsText.text = "FPS: " + (fps * 4) + " / " + stage.frameRate;
+                }
                 memText.text = "MEM: " + mem;
 
                 fps = 0;

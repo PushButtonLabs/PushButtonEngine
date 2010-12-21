@@ -11,7 +11,7 @@ package com.pblabs.engine.core
     import com.pblabs.engine.PBE;
     import com.pblabs.engine.debug.Logger;
     import com.pblabs.engine.serialization.ISerializable;
-    
+
     import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
     import flash.utils.Dictionary;
@@ -44,7 +44,9 @@ package com.pblabs.engine.core
         public function serialize(xml:XML):void
         {
             for (var keyCode:String in _keymap)
-                xml.appendChild(new XML("<" + _keymap[keyCode] + ">" + InputKey.codeToString(parseInt(keyCode)) + "</" + _keymap[keyCode] +">"));
+            {
+                xml.appendChild(new XML("<" + _keymap[keyCode] + ">" + InputKey.codeToString(parseInt(keyCode)) + "</" + _keymap[keyCode] + ">"));
+            }
         }
 
         /**
@@ -57,7 +59,9 @@ package com.pblabs.engine.core
         public function deserialize(xml:XML):*
         {
             for each (var keyXML:XML in xml.children())
+            {
                 mapKeyToAction(InputKey.stringToKey(keyXML.toString()), keyXML.name());
+            }
 
             return this;
         }
@@ -80,8 +84,10 @@ package com.pblabs.engine.core
          */
         public function mapKeyToAction(key:InputKey, actionName:String):void
         {
-            if(!key)
+            if (!key)
+            {
                 throw new Error("Got a null key in mapKeyToAction; you probably have a typo in a key name.");
+            }
 
             if (_keymap[key.keyCode] == null)
             {
@@ -105,7 +111,7 @@ package com.pblabs.engine.core
                 else if (key == InputKey.MOUSE_HOVER)
                 {
                     PBE.inputManager.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-                    PBE.inputManager.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);            	
+                    PBE.inputManager.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
                 }
                 else if (!_registeredForKeyEvents)
                 {
@@ -172,11 +178,11 @@ package com.pblabs.engine.core
         public function mapKeyToHandler(key:InputKey, handler:Function):void
         {
             // Use the key name as an intermediate unique action name
-            var action:String = InputKey.codeToString(key.keyCode); 
+            var action:String = InputKey.codeToString(key.keyCode);
 
             mapKeyToAction(key, action);
             mapActionToHandler(action, handler);
-        }      
+        }
 
 
         public function destroy():void
@@ -222,10 +228,14 @@ package com.pblabs.engine.core
             }
 
             if (event.stageX != _lastMouseX || _suppressDeltaNextTime)
+            {
                 onInputEvent(InputKey.MOUSE_X.keyCode, _suppressDeltaNextTime ? 0 : PBE.mainClass.parent.mouseX - _lastMouseX);
+            }
 
             if (event.stageY != _lastMouseY || _suppressDeltaNextTime)
+            {
                 onInputEvent(InputKey.MOUSE_Y.keyCode, _suppressDeltaNextTime ? 0 : PBE.mainClass.parent.mouseY - _lastMouseY);
+            }
 
             _lastMouseX = event.stageX;
             _lastMouseY = event.stageY;
@@ -251,12 +261,14 @@ package com.pblabs.engine.core
         {
             var action:String = _keymap[keyCode];
             if (action == null)
+            {
                 return;
+            }
 
             var callback:Function = _bindings[action];
             if (callback == null)
             {
-                Logger.print(this, "Got an action for '" + action + "' but no registered callback; ignoring."); 
+                Logger.print(this, "Got an action for '" + action + "' but no registered callback; ignoring.");
                 return;
             }
 
@@ -266,7 +278,7 @@ package com.pblabs.engine.core
         private var _lastMouseX:Number = Number.NEGATIVE_INFINITY;
         private var _lastMouseY:Number = Number.NEGATIVE_INFINITY;
         private var _suppressDeltaNextTime:Boolean = false;
-        
+
         /** _keymap links an key input or mouse input to an action name */
         private var _keymap:Dictionary = new Dictionary();
         /** _bindings links an action name to a function callback */

@@ -20,14 +20,16 @@ package com.pblabs.components.stateMachine
         {
             _duration = value;
         }
-        
+
         public function getDuration(fsm:IMachine):int
         {
-            if(durationProperty)
-               return fsm.propertyBag.getProperty(durationProperty);             
+            if (durationProperty)
+            {
+                return fsm.propertyBag.getProperty(durationProperty);
+            }
             return _duration;
         }
-        
+
         public function getTimeForNextTick(fsm:IMachine):int
         {
             return PBE.processManager.virtualTime + getDuration(fsm);

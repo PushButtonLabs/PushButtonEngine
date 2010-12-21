@@ -15,27 +15,31 @@ package com.pblabs.engine.entity
     {
         public var propertyParent:Object = null;
         public var propertyName:String = null;
-        
+
         final public function getValue():*
         {
             try
-            {         
-                if(propertyName)
+            {
+                if (propertyName)
+                {
                     return propertyParent[propertyName];
+                }
                 else
+                {
                     return propertyParent;
+                }
             }
             catch(e:Error)
             {
                 return null;
             }
         }
-        
+
         final public function setValue(value:*):void
         {
             propertyParent[propertyName] = value;
         }
-        
+
         final public function clear():void
         {
             propertyParent = null;
