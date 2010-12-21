@@ -93,6 +93,11 @@ package com.pblabs.rendering2D
         * currentAnimationReference.
         */
         public var changeAnimationEvent:String;
+				/**
+				* If true the animation controller always finishes an animation before going
+				* to the next animation. 
+				*/
+				public var waitForAnimationsToFinish:Boolean = true;
 
         /**
          * Contains the currently playing animation if any.
@@ -139,7 +144,7 @@ package com.pblabs.rendering2D
 
             // Expire current animation if it has finished playing and it's what we
             // want to keep playing.
-            if (_currentAnimation !== nextAnim && PBE.processManager.virtualTime > (_currentAnimationStartTime + _currentAnimationDuration))
+            if (_currentAnimation !== nextAnim && (!waitForAnimationsToFinish || PBE.processManager.virtualTime > (_currentAnimationStartTime + _currentAnimationDuration)))
                 _currentAnimation = null;
 
             // If we do not have a current animation, start playing the next.
