@@ -31,7 +31,7 @@ package com.pblabs.engine.core
          */
         public var name:String;
 
-        public function TemplateEvent(type:String, name:String, bubbles:Boolean = false, cancelable:Boolean = false)
+        public function TemplateEvent(type:String, name:String, bubbles:Boolean=false, cancelable:Boolean=false)
         {
             this.name = name;
             super(type, bubbles, cancelable);

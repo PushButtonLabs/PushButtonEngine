@@ -8,9 +8,9 @@
  ******************************************************************************/
 package com.pblabs.engine.debug
 {
-
+    
     /**
-     * Simply dump log activity via trace().
+     * Simply dump log activity via trace(). 
      */
     public class TraceAppender implements ILogAppender
     {

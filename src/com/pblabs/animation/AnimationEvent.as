@@ -9,29 +9,28 @@
 package com.pblabs.animation
 {
     import flash.events.Event;
-
     /**
      * Event type used by the Animator class to indicate when certain playback events have happened.
      */
     public class AnimationEvent extends Event
     {
-        //--------------------------------------------------------------------------
-        //
-        //  Constructor
-        //
-        //--------------------------------------------------------------------------
-        public function AnimationEvent(type:String, animation:Animator, bubbles:Boolean = true, cancelable:Boolean = false)
-        {
-            animation = animation;
-            super(type, bubbles, cancelable);
-        }
-
-        //--------------------------------------------------------------------------
-        //
-        //  Variables
-        //
-        //--------------------------------------------------------------------------
-
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+		public function AnimationEvent(type:String, animation:Animator, bubbles:Boolean = true, cancelable:Boolean = false)
+		{
+			animation = animation;
+			super(type, bubbles, cancelable);
+		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Variables
+		//
+		//--------------------------------------------------------------------------
+		
         /**
          * This event is dispatched by an Animator when the animation completely finishes.
          *

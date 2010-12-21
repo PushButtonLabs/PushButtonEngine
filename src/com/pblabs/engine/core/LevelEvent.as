@@ -44,7 +44,7 @@ package com.pblabs.engine.core
          */
         public var level:int = -1;
 
-        public function LevelEvent(type:String, level:int, bubbles:Boolean = false, cancelable:Boolean = false)
+        public function LevelEvent(type:String, level:int, bubbles:Boolean=false, cancelable:Boolean=false)
         {
             this.level = level;
             super(type, bubbles, cancelable);

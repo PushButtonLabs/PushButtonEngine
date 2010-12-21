@@ -9,7 +9,7 @@
 package com.pblabs.engine.core
 {
     import com.pblabs.engine.PBE;
-
+    
     import flash.events.EventDispatcher;
     import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
@@ -31,19 +31,19 @@ package com.pblabs.engine.core
         public function InputManager()
         {
             PBE.mainStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-            PBE.mainStage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+            PBE.mainStage.addEventListener(KeyboardEvent.KEY_UP,   onKeyUp);
+            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_DOWN,  onMouseDown);
+            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_UP,    onMouseUp);
+            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_MOVE,  onMouseMove);
             PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
-            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
-
+            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_OVER,  onMouseOver);
+            PBE.mainClass.parent.addEventListener(MouseEvent.MOUSE_OUT,   onMouseOut);
+            
             // Add ourselves with the highest priority, so that our update happens at the beginning of the next tick.
             // This will keep objects processing afterwards as up-to-date as possible when using keyJustPressed() or keyJustReleased()
-            PBE.processManager.addTickedObject(this, Number.MAX_VALUE);
+            PBE.processManager.addTickedObject( this, Number.MAX_VALUE );
         }
-
+        
         /**
          * @inheritDoc
          */
@@ -51,33 +51,25 @@ package com.pblabs.engine.core
         {
             // This function tracks which keys were just pressed (or released) within the last tick.
             // It should be called at the beginning of the tick to give the most accurate responses possible.
-
+            
             var cnt:int;
-
+            
             for (cnt = 0; cnt < _keyState.length; cnt++)
             {
                 if (_keyState[cnt] && !_keyStateOld[cnt])
-                {
                     _justPressed[cnt] = true;
-                }
                 else
-                {
                     _justPressed[cnt] = false;
-                }
-
+                
                 if (!_keyState[cnt] && _keyStateOld[cnt])
-                {
                     _justReleased[cnt] = true;
-                }
                 else
-                {
                     _justReleased[cnt] = false;
-                }
-
+                
                 _keyStateOld[cnt] = _keyState[cnt];
             }
         }
-
+        
         /**
          * Returns whether or not a key was pressed since the last tick.
          */
@@ -85,7 +77,7 @@ package com.pblabs.engine.core
         {
             return _justPressed[keyCode];
         }
-
+        
         /**
          * Returns whether or not a key was released since the last tick.
          */
@@ -101,19 +93,15 @@ package com.pblabs.engine.core
         {
             return _keyState[keyCode];
         }
-
+        
         /**
          * Returns true if any key is down.
          */
         public function isAnyKeyDown():Boolean
         {
             for each(var b:Boolean in _keyState)
-            {
-                if (b)
-                {
+                if(b)
                     return true;
-                }
-            }
             return false;
         }
 
@@ -169,7 +157,7 @@ package com.pblabs.engine.core
          */
         public function simulateMouseMove():void
         {
-            dispatchEvent(new MouseEvent(MouseEvent.MOUSE_MOVE, true, false, Math.random() * 100, Math.random() * 100));
+            dispatchEvent(new MouseEvent(MouseEvent.MOUSE_MOVE, true, false, Math.random() * 100, Math.random () * 100));
         }
 
         public function simulateMouseOver():void
@@ -190,9 +178,7 @@ package com.pblabs.engine.core
         private function onKeyDown(event:KeyboardEvent):void
         {
             if (_keyState[event.keyCode])
-            {
                 return;
-            }
 
             _keyState[event.keyCode] = true;
             dispatchEvent(event);

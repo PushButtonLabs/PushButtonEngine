@@ -16,21 +16,19 @@ package com.pblabs.engine.core
     public class PBGroup extends PBObject
     {
         protected var items:Array = [];
-
+        
         internal function addToGroup(item:IPBObject):Boolean
         {
             items.push(item);
             return true;
         }
-
+        
         internal function removeFromGroup(item:IPBObject):Boolean
         {
             var idx:int = items.indexOf(item);
-            if (idx == -1)
-            {
+            if(idx == -1)
                 return false;
-            }
-
+            
             items.splice(idx, 1);
             return true
         }
@@ -40,13 +38,11 @@ package com.pblabs.engine.core
          */
         public function getItem(index:int):IPBObject
         {
-            if (index < 0 || index >= items.length)
-            {
+            if(index < 0 || index >= items.length)
                 return null;
-            }
             return items[index];
         }
-
+        
         /**
          * How many PBObjects are in this group?
          */
@@ -54,30 +50,24 @@ package com.pblabs.engine.core
         {
             return items.length;
         }
-
+        
         /**
          * Destroy all the objects in this group, but do not delete the group.
          */
         public function clear():void
         {
             // Delete the items we own.
-            while (items.length)
-            {
-                (items.pop()
-                        as
-                        PBObject
-                        ).
-                        destroy();
-            }
+            while(items.length)
+                (items.pop() as PBObject).destroy();            
         }
-
-        public override function destroy():void
+        
+        public override function destroy() : void
         {
             // Delete everything.
             clear();
-
+            
             // Pass control up.
-            super.destroy();
+            super.destroy();            
         }
     }
 }

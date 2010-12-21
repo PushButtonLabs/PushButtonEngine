@@ -9,43 +9,43 @@
 package com.pblabs.components.basic
 {
     import com.pblabs.engine.entity.IEntity;
-
+    
     import flash.events.Event;
-
+    
     /**
      * Event fired by the HealthComponent on the entity when health changes.
      */
     public class HealthEvent extends Event
     {
-        public static var DIED:String = "HealthDead";
-        public static var RESURRECTED:String = "HealthResurrected";
-        public static var DAMAGED:String = "HealthDamaged";
-        public static var HEALED:String = "HealthHealed";
-
+		public static var DIED:String = "HealthDead";
+		public static var RESURRECTED:String = "HealthResurrected";
+		public static var DAMAGED:String = "HealthDamaged";
+		public static var HEALED:String = "HealthHealed";
+	
         /**
          * Change in health.
          */
         public var delta:Number;
-
+        
         /**
-         * Current health amount, after the delta. The health property on the
+         * Current health amount, after the delta. The health property on the 
          * component is not updated until after the event is processed.
          */
         public var amount:Number;
-
+        
         /**
          * Entity which caused this damage (or healing), if any.
          */
         public var originatingEntity:IEntity;
-
-        public function HealthEvent(type:String, deltaAmt:Number, amountAmt:Number, originator:IEntity, bubbles:Boolean = false, cancelable:Boolean = false)
+        
+        public function HealthEvent(type:String, deltaAmt:Number, amountAmt:Number, originator:IEntity, bubbles:Boolean=false, cancelable:Boolean=false)
         {
             delta = deltaAmt;
             amount = amountAmt;
             originatingEntity = originator;
             super(type, bubbles, cancelable);
         }
-
+        
         public function isDead():Boolean
         {
             return amount == 0;

@@ -8,6 +8,7 @@
  ******************************************************************************/
 package com.pblabs.engine.core
 {
+    import com.pblabs.engine.debug.Logger;
     import com.pblabs.engine.serialization.Enumerable;
 
     import flash.utils.Dictionary;
@@ -15,7 +16,7 @@ package com.pblabs.engine.core
     /**
      * Enumeration class that maps friendly key names to their key code equivalent. This class
      * should not be instantiated directly, rather, one of the constants should be used.
-     */
+     */   
     public class InputKey extends Enumerable
     {
         public static const INVALID:InputKey = new InputKey(0);
@@ -320,9 +321,7 @@ package com.pblabs.engine.core
             for (var name:String in tm)
             {
                 if (staticTypeMap[name.toUpperCase()].keyCode == value)
-                {
                     return name.toUpperCase();
-                }
             }
 
             return null;
@@ -334,9 +333,7 @@ package com.pblabs.engine.core
         public static function stringToCode(value:String):int
         {
             if (!staticTypeMap[value.toUpperCase()])
-            {
                 return 0;
-            }
 
             return staticTypeMap[value.toUpperCase()].keyCode;
         }
@@ -359,7 +356,7 @@ package com.pblabs.engine.core
             return _keyCode;
         }
 
-        public function InputKey(keyCode:int = 0)
+        public function InputKey(keyCode:int=0)
         {
             _keyCode = keyCode;
         }
