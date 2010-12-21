@@ -93,11 +93,12 @@ package com.pblabs.rendering2D
         * currentAnimationReference.
         */
         public var changeAnimationEvent:String;
-				/**
-				* If true the animation controller always finishes an animation before going
-				* to the next animation. 
-				*/
-				public var waitForAnimationsToFinish:Boolean = true;
+
+        /**
+        * If true the animation controller always finishes an animation before going
+        * to the next animation. 
+        */
+        public var waitForAnimationsToFinish:Boolean = true;
 
         /**
          * Contains the currently playing animation if any.
