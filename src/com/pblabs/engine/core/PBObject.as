@@ -12,7 +12,7 @@ package com.pblabs.engine.core
 
     /**
      * Base implementation of a named object that can exist in PBSets or PBGroups.
-     * 
+     *
      * @see IPBObject
      */
     public class PBObject implements IPBObject
@@ -20,16 +20,16 @@ package com.pblabs.engine.core
         protected var _name:String, _alias:String;
         protected var _owningGroup:PBGroup;
         protected var _sets:Array;
-        
+
         internal function noteInSet(s:PBSet):void
         {
             if(!_sets)
                 _sets = [];
             if(_sets.indexOf(s) != -1)
-                return;      
+                return;
             _sets.push(s);
         }
-        
+
         internal function noteOutOfSet(s:PBSet):void
         {
             var idx:int = _sets.indexOf(s);
@@ -37,7 +37,7 @@ package com.pblabs.engine.core
                 throw new Error("Removed object from set that it isn't in.");
             _sets.splice(idx, 1);
         }
-        
+
         public function get owningGroup():PBGroup
         {
             return _owningGroup;
@@ -47,10 +47,10 @@ package com.pblabs.engine.core
         {
             if(!value)
                 throw new Error("Must always be in a group - cannot set owningGroup to null!");
-            
+
             if(_owningGroup)
                 _owningGroup.removeFromGroup(this);
-            
+
             _owningGroup = value;
             _owningGroup.addToGroup(this);
         }
@@ -59,31 +59,31 @@ package com.pblabs.engine.core
         {
             return _name;
         }
-        
+
         public function get alias():String
         {
             return _alias;
         }
 
         public function initialize(name:String = null, alias:String = null):void
-        {           
+        {
             // Note the names.
             _name = name;
             _alias = alias;
-            
+
             // Register with the name manager.
             PBE.nameManager.add(this);
-            
+
             // Put us in the current group if we have no group specified.
             if(owningGroup == null && PBE.currentGroup != this)
                 owningGroup = PBE.currentGroup;
         }
-        
+
         public function destroy():void
         {
             // Remove from the name manager.
             PBE.nameManager.remove(this);
-            
+
             // Remove from any sets.
             while(_sets && _sets.length)
             {
@@ -99,22 +99,22 @@ package com.pblabs.engine.core
             if(_owningGroup)
             {
                 _owningGroup.removeFromGroup(this);
-                _owningGroup = null;                
+                _owningGroup = null;
             }
         }
-		
-		public function changeName(name : String):void
-		{
-			if(name){
-				// Remove from the name manager.
-				PBE.nameManager.remove(this);
-				
-				// Change the name.
-				_name = name;
-				
-				// Register with the name manager.
-				PBE.nameManager.add(this);
-			}
-		}
+
+        public function changeName(name : String):void
+        {
+            if(name){
+                // Remove from the name manager.
+                PBE.nameManager.remove(this);
+
+                // Change the name.
+                _name = name;
+
+                // Register with the name manager.
+                PBE.nameManager.add(this);
+            }
+        }
     }
 }
