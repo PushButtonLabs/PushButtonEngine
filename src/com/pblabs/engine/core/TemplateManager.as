@@ -105,9 +105,11 @@ package com.pblabs.engine.core
 		 * @param name The name of the entity or template to instantiate. This
 		 * corresponds to the name attribute on the template or entity tag in the XML.
 		 *
+		 * @param entityName optional name to instantiate if the xml is based on a template
+		 *
 		 * @return The created entity, or null if it wasn't found.
 		 */
-		public function instantiateEntity(name:String):IEntity
+		public function instantiateEntity(name:String, entityName:String = null):IEntity
 		{
 			Profiler.enter("instantiateEntity");
 
@@ -135,7 +137,7 @@ package com.pblabs.engine.core
 					return null;
 				}
 
-				var entity:IEntity=instantiateEntityFromXML(xml);
+				var entity:IEntity=instantiateEntityFromXML(xml, entityName);
 				Profiler.exit("instantiateEntity");
 			}
 			catch (e:Error)
@@ -150,8 +152,9 @@ package com.pblabs.engine.core
 
 		/**
 		 * Given an XML literal, construct a valid entity from it.
+		 * @param entityName optional name to instantiate the entity with
 		 */
-		public function instantiateEntityFromXML(xml:XML):IEntity
+		public function instantiateEntityFromXML(xml:XML, entityName:String = null ):IEntity
 		{
 			Profiler.enter("instantiateEntityFromXML");
 
@@ -160,7 +163,7 @@ package com.pblabs.engine.core
                 // Get at the name...
 				var name:String = xml.attribute("name");
 				if (xml.name() == "template")
-					name = "";
+					name = (entityName == null) ? "" : entityName;
 
                 // And the alias...
 				var alias:String=xml.attribute("alias");
