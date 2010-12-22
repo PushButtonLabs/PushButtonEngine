@@ -75,6 +75,41 @@ package com.pblabs.engine.core
                 delete _objects[object.name];
             }
         }
+
+
+		/**
+		 * Register an alias for an IPBObject 
+		 * @param object The object to register the alias for
+		 * @param alias The alias to register
+		 **/
+		public function registerAlias(object:IPBObject, alias:String):void{
+			if(alias == null || alias == "") {
+				Logger.warn(this, "registerAlias", "Attempt made to register unvalid alias : '"+alias+"'");
+				return;
+			}
+			
+			if(_objects[alias]){
+				Logger.warn(this, "registerAlias","A PBObject with the name " + alias + " already exists ");
+				return;
+			}
+			
+			_objects[alias] = object;
+		}
+		
+		/**
+		 * Unregister an alias for an IPBObject 
+		 * @param object The object to register the alias for
+		 * @param alias The alias to unregister
+		 **/		
+		public function unregisterAlias(object:IPBObject, alias:String):void{
+			if(_objects[alias] && _objects[alias] == object){
+				_objects[alias] = null;
+				delete _objects[alias];
+			} else {
+				Logger.warn(this, "unregisterAlias", "Attempt made to unregister alias '"+alias+"' but the object registered is not the same");
+				return;
+			}
+		}
         
         /**
          * Looks up a PBObject with the specified name.
