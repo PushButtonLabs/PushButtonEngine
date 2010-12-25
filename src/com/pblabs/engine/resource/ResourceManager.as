@@ -11,6 +11,7 @@ package com.pblabs.engine.resource
     import com.pblabs.engine.PBE;
     import com.pblabs.engine.PBUtil;
     import com.pblabs.engine.debug.Logger;
+    import com.pblabs.engine.ns_pbe;
     import com.pblabs.engine.resource.provider.EmbeddedResourceProvider;
     import com.pblabs.engine.resource.provider.FallbackResourceProvider;
     import com.pblabs.engine.resource.provider.IResourceProvider;
@@ -39,7 +40,7 @@ package com.pblabs.engine.resource
          * as via a dialog box ;). Passed the filename of the requested resource.
          */
         public var onEmbeddedFail:Function;
-        
+
         /**
          * Loads a resource from a file. If the resource has already been loaded or is embedded, a
          * reference to the existing resource will be given. The resource is not returned directly
@@ -240,7 +241,7 @@ package com.pblabs.engine.resource
 			var resourceIdentifier:String = filename.toLowerCase() + resourceType;
 			return _resources[resourceIdentifier];
 		}
-		
+
         /**
          * Properly mark a resource as failed-to-load.
          */
@@ -263,5 +264,11 @@ package com.pblabs.engine.resource
          * List of resource providers used to get resources. 
          */        
         private var resourceProviders:Array = new Array();
+
+        /*** Helper methods for PBE not externally exposed ***/
+        ns_pbe function getResources():Dictionary
+        {
+            return _resources;
+        }
     }
 }
