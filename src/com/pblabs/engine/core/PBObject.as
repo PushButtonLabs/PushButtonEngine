@@ -106,7 +106,8 @@ package com.pblabs.engine.core
 
         pb_internal function changeName(name : String):void
         {
-            if(name){
+            if(name)
+            {
                 // Remove from the name manager.
                 PBE.nameManager.remove(this);
 
