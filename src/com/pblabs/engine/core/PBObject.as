@@ -9,6 +9,7 @@
 package com.pblabs.engine.core
 {
     import com.pblabs.engine.PBE;
+    import com.pblabs.engine.pb_internal;
 
     /**
      * Base implementation of a named object that can exist in PBSets or PBGroups.
@@ -103,7 +104,7 @@ package com.pblabs.engine.core
             }
         }
 
-        public function changeName(name : String):void
+        pb_internal function changeName(name : String):void
         {
             if(name){
                 // Remove from the name manager.

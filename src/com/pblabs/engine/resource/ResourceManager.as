@@ -11,7 +11,7 @@ package com.pblabs.engine.resource
     import com.pblabs.engine.PBE;
     import com.pblabs.engine.PBUtil;
     import com.pblabs.engine.debug.Logger;
-    import com.pblabs.engine.ns_pbe;
+    import com.pblabs.engine.pb_internal;
     import com.pblabs.engine.resource.provider.EmbeddedResourceProvider;
     import com.pblabs.engine.resource.provider.FallbackResourceProvider;
     import com.pblabs.engine.resource.provider.IResourceProvider;
@@ -266,7 +266,7 @@ package com.pblabs.engine.resource
         private var resourceProviders:Array = new Array();
 
         /*** Helper methods for PBE not externally exposed ***/
-        ns_pbe function getResources():Dictionary
+        pb_internal function getResources():Dictionary
         {
             return _resources;
         }
