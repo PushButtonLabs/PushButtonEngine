@@ -26,7 +26,9 @@ package com.pblabs.engine.resource
      * resources no longer in use.
      */
     public class ResourceManager
-    {        
+    {
+        public static const RESOURCE_KEY_SPLITTER:String = "|*|";
+
         /**
          * If true, we will never get resources from outside the SWF - only resources
          * that have been properly embedded and registered with the ResourceManager
@@ -75,7 +77,7 @@ package com.pblabs.engine.resource
             }
             
             // Look up the resource.
-            var resourceIdentifier:String = filename.toLowerCase() + resourceType;
+            var resourceIdentifier:String = getResourceIdentifier(filename, resourceType);
             var resource:Resource = _resources[resourceIdentifier];
             
             // If it was loaded and we want to force a reload, do that.
@@ -102,7 +104,7 @@ package com.pblabs.engine.resource
                 }
                 
                 // Hack for MP3 and WAV files. TODO: Generalize this for arbitrary formats.
-                var fileExtension:String = PBUtil.getFileExtension(filename).toLocaleLowerCase();
+                var fileExtension:String = PBUtil.getFileExtension(filename).toLowerCase();
                 if(resourceType == SoundResource && (fileExtension == "mp3" || fileExtension == "wav"))
                     resourceType = MP3Resource;
                 
@@ -167,7 +169,7 @@ package com.pblabs.engine.resource
          */
         public function unload(filename:String, resourceType:Class):void
         {        
-			var resourceIdentifier:String = filename.toLowerCase() + resourceType;			
+			var resourceIdentifier:String = getResourceIdentifier(filename, resourceType);
             if (!_resources[resourceIdentifier])
             {
                 Logger.warn(this, "Unload", "The resource from file " + filename + " of type " + resourceType + " is not loaded.");
@@ -188,7 +190,7 @@ package com.pblabs.engine.resource
 						(resourceProviders[rp] as IResourceProvider).unloadResource(filename, resourceType);
 						return;
 					}
-				};
+				}
 				FallbackResourceProvider.instance.unloadResource(filename, resourceType);				
             }						
         }
@@ -217,12 +219,12 @@ package com.pblabs.engine.resource
         /**
          * Check if a resource is loaded and ready to go. 
          * @param filename Same as request to load()
-         * @param type Same as request to load().
+         * @param resourceType Same as request to load().
          * @return True if resource is loaded.
          */
         public function isLoaded(filename:String, resourceType:Class):Boolean
         {
-            var resourceIdentifier:String = filename.toLowerCase() + resourceType;
+            var resourceIdentifier:String = getResourceIdentifier(filename, resourceType);
             if(!_resources[resourceIdentifier])
                 return false;
             
@@ -233,13 +235,12 @@ package com.pblabs.engine.resource
 		/**
 		 * Provides a resource if it is known. could be that it is not loaded yet.  
 		 * @param filename Same as request to load()
-		 * @param type Same as request to load().
+		 * @param resourceType Same as request to load().
 		 * @return resource
 		 */
 		public function getResource(filename:String, resourceType:Class):Resource
 		{
-			var resourceIdentifier:String = filename.toLowerCase() + resourceType;
-			return _resources[resourceIdentifier];
+			return _resources[getResourceIdentifier(filename, resourceType)];
 		}
 
         /**
@@ -253,6 +254,11 @@ package com.pblabs.engine.resource
             Logger.error(this, "load", message);
             if (onFailed != null)
                 PBE.callLater(onFailed, [resource]);
+        }
+
+        private function getResourceIdentifier(filename:String, resourceType:Class):String
+        {
+            return filename.toLowerCase() + RESOURCE_KEY_SPLITTER + resourceType;
         }
         
         /**
