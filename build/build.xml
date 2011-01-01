@@ -165,10 +165,10 @@ http://bugs.adobe.com/jira/browse/SDK-20449
 
     <target name="cleanDocs" description="Clean the documentation directory.">
         <echo>Cleaning out docs from '${docsDir}'...</echo>
-        <delete includeemptydirs="true" quiet="false">
+        <delete includeemptydirs="true" quiet="false" failonerror="false">
             <fileset dir="${docsDir}" includes="**/*"></fileset>
         </delete>
-        <delete includeemptydirs="true" quiet="false">
+        <delete includeemptydirs="true" quiet="false" failonerror="false">
           <fileset dir="${downloadsDir}" includes="*"></fileset>
         </delete>
     </target>
