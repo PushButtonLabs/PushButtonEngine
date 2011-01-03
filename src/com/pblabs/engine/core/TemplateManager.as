@@ -105,7 +105,7 @@ package com.pblabs.engine.core
 		 * @param name The name of the entity or template to instantiate. This
 		 * corresponds to the name attribute on the template or entity tag in the XML.
 		 *
-		 * @param entityName optional name to instantiate if the xml is based on a template
+		 * @param entityName optional name to instantiate the entity with if name refers to a template
 		 *
 		 * @return The created entity, or null if it wasn't found.
 		 */
@@ -152,7 +152,7 @@ package com.pblabs.engine.core
 
 		/**
 		 * Given an XML literal, construct a valid entity from it.
-		 * @param entityName optional name to instantiate the entity with
+		 * @param entityName optional name to instantiate the entity with if the xml is a template
 		 */
 		public function instantiateEntityFromXML(xml:XML, entityName:String = null ):IEntity
 		{
