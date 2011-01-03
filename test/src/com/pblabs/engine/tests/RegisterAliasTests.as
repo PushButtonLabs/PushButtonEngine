@@ -9,14 +9,14 @@ package com.pblabs.engine.tests
     import mx.core.UIComponent;
     
     import org.fluint.uiImpersonation.UIImpersonator;
-
+    
     /**
-    * Unit test for registerAlias and unregisterAlias functionality on NameManager 
-    **/
+     * Unit test for registerAlias and unregisterAlias functionality on NameManager 
+     **/
     public class RegisterAliasTests
     {		
         
-
+        
         [Test]
         public function testRegisterAlias():void{
             var entity:IEntity = allocateEntity();
@@ -29,14 +29,14 @@ package com.pblabs.engine.tests
             PBE.nameManager.registerAlias(entity, "testAlias2");
             Assert.assertEquals(entity, PBE.nameManager.lookup("testAlias"));
             Assert.assertEquals(entity, PBE.nameManager.lookup("testAlias2"));
-           
+            
             //Unregister the alias
             PBE.nameManager.unregisterAlias(entity, "testAlias");
             Assert.assertNull(PBE.nameManager.lookup("testAlias"));
             Assert.assertEquals(entity, PBE.nameManager.lookup("testAlias2"));
             PBE.nameManager.unregisterAlias(entity, "testAlias2");
             Assert.assertNull(PBE.nameManager.lookup("testAlias2"));
-
+            
             //Try to unregister the entityname, this should not remove the entity registration
             PBE.nameManager.unregisterAlias(entity, "testEntity");
             Assert.assertEquals(entity, PBE.nameManager.lookup("testEntity"));
