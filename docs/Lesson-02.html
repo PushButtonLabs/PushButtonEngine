@@ -86,8 +86,10 @@
          createHero();                                                        // Create a simple avatar entity
       }
    </pre>
+
    <p>First we set up our SceneView which is basically the canvas that objects are drawn upon that make up the scene.</p>
-   <p>Now we will create the Scene itself through the PBE.initializeScene helper function.</p>
+
+   <p>Next, we will create the Scene itself through the PBE.initializeScene helper function.</p>
 
    <pre class="brush: js">
       private function createScene():void 
@@ -99,8 +101,10 @@
          PBE.initializeScene(sceneView);                                      // This is just a helper function that will set up a basic scene for us
       }
    </pre>
-   <p>Next we will create our hero entity.  Just as the Scene entity had two manager components, this entity will have two components -- one to be tracked by each manager component.</p>
+   <p>Next we will create our hero entity.  Just as the Scene entity has two manager components, this entity will have two components -- one to be tracked by each manager component.</p>
+
    <p>The first component is the spatial component -- it tells the spatial manager where the entity is located.</p>
+
    <p>The second component is the render component -- it registers itself with the render manager, and tells the manager how the entity is to be drawn to the screen.  We are just using a simple circle for this lesson, but there are many more powerful options available.</p>
 
    <pre class="brush: js">
