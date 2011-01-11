@@ -18,6 +18,7 @@ package com.pblabs
 	import com.pblabs.engine.tests.SanityTests;
 	import com.pblabs.engine.tests.UtilTests;
     import com.pblabs.engine.tests.RegisterAliasTests;
+    import com.pblabs.engine.tests.InstantiateTemplateWithEntityNameTests;
 	import com.pblabs.rendering2D.tests.Rendering2DTests;
 
 	/**
@@ -41,5 +42,6 @@ package com.pblabs
         public var entityRegistrationTests:EntityRegistrationTests;
         public var groupAndSetTests:GroupAndSetTests;
         public var registerAliasTests:RegisterAliasTests;
+        public var instantiateTemplateWithEntityNameTests:InstantiateTemplateWithEntityNameTests;
 	}
 }
