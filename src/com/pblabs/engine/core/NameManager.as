@@ -74,6 +74,69 @@ package com.pblabs.engine.core
                 _objects[object.name] = null;
                 delete _objects[object.name];
             }
+            
+            
+            unregisterAliasses(object);
+        }
+        
+        
+        /**
+         * Register an alias for an IPBObject 
+         * @param object The object to register the alias for
+         * @param alias The alias to register
+         **/
+        public function registerAlias(object:IPBObject, alias:String):void{
+            if(alias == null || alias == "") {
+                Logger.warn(this, "registerAlias", "Attempt made to register unvalid alias : '"+alias+"'");
+                return;
+            }
+            
+            if(_objects[alias]){
+                Logger.warn(this, "registerAlias","A PBObject with the name " + alias + " already exists ");
+                return;
+            }
+            
+            _objects[alias] = object;
+            
+            //Store the alias in the registeredAliases map
+            if(!_registeredAliases[object])
+                _registeredAliases[object] = [];
+            _registeredAliases[object].push(alias);
+        }
+        
+        /**
+         * Unregister an alias for an IPBObject 
+         * @param object The object to register the alias for
+         * @param alias The alias to unregister
+         **/		
+        public function unregisterAlias(object:IPBObject, alias:String):void{
+            // Check if the alias excists, points to the IPBObject and is an alias 
+            if(_objects[alias] && _objects[alias] == object && _registeredAliases[object] && _registeredAliases[object].indexOf(alias) > -1){
+                _objects[alias] = null;
+                delete _objects[alias];
+                
+                _registeredAliases[object].splice(_registeredAliases[object].indexOf(alias), 1);
+                if(_registeredAliases[object].length < 1)
+                    delete _registeredAliases[object];
+                
+            } else {
+                Logger.warn(this, "unregisterAlias", "Attempt made to unregister alias '"+alias+"' but the object registered is not the same or the alias is not a registered alias");
+                return;
+            }
+        }
+        /**
+         * Unregister all aliasses for an IPBObject 
+         * @param object The IPBObject to unregister al aliasses for
+         **/
+        public function unregisterAliasses(object:IPBObject):void{
+            if(!_registeredAliases[object])
+                return;
+            
+            for each(var alias:String in  _registeredAliases[object]){
+                _objects[alias] = null;
+                delete _objects[alias];
+            } 
+            delete _registeredAliases[object];
         }
         
         /**
@@ -165,5 +228,9 @@ package com.pblabs.engine.core
         }
         
         private var _objects:Dictionary = new Dictionary();
+        
+        //Map from PBObject -> String[] that contains all registered aliasses
+        private var _registeredAliases:Dictionary = new Dictionary();
+        
     }
 }
