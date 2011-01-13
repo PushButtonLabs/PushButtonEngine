@@ -154,8 +154,9 @@ http://bugs.adobe.com/jira/browse/SDK-20449
 
     <target name="clean" description="Delete build artifacts." depends="cleanDocs,cleanLessons">
         <delete file="${binDir}/PBEngine.swc"/>
-        <delete includeemptydirs="false" quiet="true">
-          <fileset dir="${rootDir}" includes="PushButtonEngine-*.zip"></fileset>
+        <delete includeemptydirs="false" quiet="false">
+          <fileset dir="${rootDir}" includes="PushButtonEngine-*.zip"/>
+          <fileset dir="${rootDir}/build/testrun/" />
         </delete>
     </target>
 
