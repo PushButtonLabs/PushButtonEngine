@@ -46,7 +46,7 @@ http://bugs.adobe.com/jira/browse/SDK-20449
     <property name="binDir" value="${rootDir}/bin" />
     <property name="classesDir" value="${rootDir}/src" />
     <property name="docsDir" value="${rootDir}/docs/api" />
-    <property name="downloadsDir" value="${downloadsDir}" />
+    <property name="downloadsDir" value="${rootDir}/docs/downloads" />
     <property name="testsDir" value="${rootDir}/test" />
     <property name="testRunDir" value="${buildFilesDir}/testrun"></property>
     <property name="lessonsDir" value="${rootDir}/lessons" />
