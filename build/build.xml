@@ -68,7 +68,8 @@ http://bugs.adobe.com/jira/browse/SDK-20449
     <property name="mxmlc" value="${flexbindir}/mxmlc${binaryExtension}" />
     <property name="adl" value="${flexbindir}/adl${binaryExtension}" />
 
-    <property environment="env" />
+    <property environment="env" />    
+
 
     <!-- Local classpath useed for custom tasks -->
     <path id="localClasspath">
@@ -76,6 +77,21 @@ http://bugs.adobe.com/jira/browse/SDK-20449
             <include name="**/*.jar"/>
         </fileset>
     </path>
+    
+    <target name="get-git-details" >
+        <exec executable="git" outputproperty="git.revision.long">
+            <arg value="rev-parse"/>
+            <arg value="HEAD"/>
+        </exec>
+
+        <exec executable="git" outputproperty="git.revision.short">
+            <arg value="rev-parse"/>
+            <arg value="--short"/>
+            <arg value="HEAD"/>
+        </exec>
+
+        <echo>Git Details -- ${git.revision.long} (${git.revision.short})</echo>
+    </target>
 
     <target name="ensureValidEnvironment">
         <condition property="buildPropertiesIsValid">
@@ -109,10 +125,10 @@ http://bugs.adobe.com/jira/browse/SDK-20449
         </fail>
     </target>
 
-    <target name="checkBuildServer" description="Checks if this is the build server">
+    <target name="checkBuildServer" depends="get-git-details" description="Checks if this is the build server">
         <condition property="isBuildServer" value="false">
             <and>
-                <!--<isset property="env.SVN_REVISION"/>-->
+                <isset property="git.revision.short"/>
                 <isset property="env.BUILD_NUMBER"/>
             </and>
         </condition>
@@ -121,14 +137,14 @@ http://bugs.adobe.com/jira/browse/SDK-20449
     <target name="populateBuildVersion" description="Creates an updated BuildVersion.as" 
         depends="checkBuildServer" if="isBuildServer">
 
-        <!--<echo>Revision Number: ${env.SVN_REVISION}</echo>-->
+        <echo>Revision Number: ${git.revision.short}</echo>
         <echo>Build Number: ${env.BUILD_NUMBER}</echo>
 
         <copy file="${classesDir}/com/pblabs/engine/version/BuildVersion.as.templ"
             tofile="${classesDir}/com/pblabs/engine/version/BuildVersion.as" overwrite="true" />
 
         <replace file="${classesDir}/com/pblabs/engine/version/BuildVersion.as"
-            token="@buildNumber@" value="(ZaaBot build #${env.BUILD_NUMBER})" />
+            token="@buildNumber@" value="ZaaBuild #${env.BUILD_NUMBER} (${git.revision.short})" />
     </target>
 
     <target name="compile" description="Creates SWC and API docs." unless="isUpToDate" depends="printUpToDate,ensureValidEnvironment">
