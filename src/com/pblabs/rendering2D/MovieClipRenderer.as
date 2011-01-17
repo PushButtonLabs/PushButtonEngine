@@ -145,8 +145,8 @@ package com.pblabs.rendering2D
                         //Logger.(this, "Finished playback, destroying self.");
                         if(destroyOnEnd)
                             owner.destroy();
-						else
-							super.onFrame(elapsed);
+                        else
+                    	    super.onFrame(elapsed);
 						
                         return;
                     }
