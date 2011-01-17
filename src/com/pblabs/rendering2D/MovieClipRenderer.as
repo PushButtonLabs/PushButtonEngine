@@ -146,7 +146,7 @@ package com.pblabs.rendering2D
                         if(destroyOnEnd)
                             owner.destroy();
                         else
-                    	    super.onFrame(elapsed);
+                            super.onFrame(elapsed);
 						
                         return;
                     }
