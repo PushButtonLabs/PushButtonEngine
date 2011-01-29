@@ -18,8 +18,10 @@ package com.pblabs.engine.resource
     import com.pblabs.engine.resource.provider.FallbackResourceProvider;
     import com.pblabs.engine.resource.provider.IResourceProvider;
     import com.pblabs.engine.serialization.TypeUtility;
-    
+
+    import flash.display.Loader;
     import flash.events.Event;
+    import flash.utils.ByteArray;
     import flash.utils.Dictionary;
     
     /**
@@ -277,6 +279,11 @@ package com.pblabs.engine.resource
         pb_internal function getResources():Dictionary
         {
             return _resources;
+        }
+
+        pb_internal function getResourceByIdentifier(identifier:String):Resource
+        {
+            return _resources[identifier];
         }
     }
 }
