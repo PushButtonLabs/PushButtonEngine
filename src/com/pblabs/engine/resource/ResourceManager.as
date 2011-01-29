@@ -8,6 +8,8 @@
  ******************************************************************************/
 package com.pblabs.engine.resource
 {
+    import avmplus.getQualifiedClassName;
+
     import com.pblabs.engine.PBE;
     import com.pblabs.engine.PBUtil;
     import com.pblabs.engine.debug.Logger;
@@ -258,7 +260,7 @@ package com.pblabs.engine.resource
 
         private function getResourceIdentifier(filename:String, resourceType:Class):String
         {
-            return filename.toLowerCase() + RESOURCE_KEY_SPLITTER + resourceType;
+            return filename.toLowerCase() + RESOURCE_KEY_SPLITTER + getQualifiedClassName(resourceType);
         }
         
         /**
