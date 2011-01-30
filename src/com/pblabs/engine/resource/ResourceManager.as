@@ -19,11 +19,9 @@ package com.pblabs.engine.resource
     import com.pblabs.engine.resource.provider.IResourceProvider;
     import com.pblabs.engine.serialization.TypeUtility;
 
-    import flash.display.Loader;
     import flash.events.Event;
-    import flash.utils.ByteArray;
     import flash.utils.Dictionary;
-    
+
     /**
      * The resource manager handles all tasks related to using asset files (images, xml, etc)
      * in a project. This includes loading files, managing embedded resources, and cleaninp up

@@ -10,7 +10,11 @@ package com.pblabs.rendering2D
 {
     import com.pblabs.engine.PBE;
     import com.pblabs.engine.resource.ImageResource;
-    
+
+    import com.pblabs.engine.resource.Resource;
+    import com.pblabs.engine.resource.ResourceEvent;
+
+    import flash.events.Event;
     import flash.geom.Point;
 	
    /**
@@ -43,7 +47,7 @@ package com.pblabs.rendering2D
 				_fileName = value;
 				_loading = true;
 				// Tell the ResourceManager to load the ImageResource
-				PBE.resourceManager.load(fileName,ImageResource,imageLoadCompleted,imageLoadFailed,false);				
+				PBE.resourceManager.load(fileName,ImageResource,imageLoadCompleted,imageLoadFailed,false);
 			}	
 		}
 						
@@ -108,11 +112,17 @@ package com.pblabs.rendering2D
 			_loaded = true;
 			_failed = false;
 			_resource = res;
+            _resource.addEventListener(ResourceEvent.LOADED_EVENT, onResourceUpdated, false, 0, true);
 			// set the registration (alignment) point to the sprite's center
 			registrationPoint = new Point(res.image.bitmapData.width/2,res.image.bitmapData.height/2);				
 			// set the bitmapData of this render object
 			bitmapData = res.image.bitmapData;	
 		}
+
+        protected function onResourceUpdated(event:ResourceEvent):void
+        {
+            imageLoadCompleted(_resource);
+        }
 		
 		protected override function dataModified():void
 		{
