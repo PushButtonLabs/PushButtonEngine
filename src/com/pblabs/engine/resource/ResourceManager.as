@@ -8,8 +8,6 @@
  ******************************************************************************/
 package com.pblabs.engine.resource
 {
-    import avmplus.getQualifiedClassName;
-
     import com.pblabs.engine.PBE;
     import com.pblabs.engine.PBUtil;
     import com.pblabs.engine.debug.Logger;
@@ -21,6 +19,7 @@ package com.pblabs.engine.resource
 
     import flash.events.Event;
     import flash.utils.Dictionary;
+    import flash.utils.getQualifiedClassName;
 
     /**
      * The resource manager handles all tasks related to using asset files (images, xml, etc)
