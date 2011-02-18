@@ -162,7 +162,7 @@ http://bugs.adobe.com/jira/browse/SDK-20449
 
     <target name="cleanLessons" description="Clean the documentation directory.">
         <echo>Cleaning out lessons...</echo>
-        <delete includeemptydirs="true" quiet="false">
+        <delete includeemptydirs="true" quiet="false" failonerror="false">
           <fileset dir="${lessonsDir}" includes="*/bin/*"></fileset>
         </delete>
     </target>
