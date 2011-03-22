@@ -116,10 +116,16 @@ package com.pblabs.debug
         
         public function toggleConsole():void
         {
-            if(this.stage)
+            if(stage)
+            {
                 stage.removeChild(this);
+                deactivate();
+            }
             else
-                owningStage.addChild(this);            
+            {
+                owningStage.addChild(this);
+                activate();
+            }
         }
         
         protected function onAddedToStage(e:Event):void
@@ -587,16 +593,17 @@ package com.pblabs.debug
             _input.text = "";
             addListeners();
             
-            if(stage)
-                stage.focus = _input;
+            timeManager.callLater(function()
+            {
+                owningStage.focus = _input;                
+            });
         }
         
         public function deactivate():void
         {
             removeListeners();
             
-            if(stage)
-                stage.focus = null;
+            owningStage.focus = owningStage;
         }
         
         public function set restrict(value:String):void
