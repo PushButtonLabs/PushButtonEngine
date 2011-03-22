@@ -18,8 +18,9 @@ package com.pblabs.core
         {
             if(injector)
                 return injector;
-            else
+            else if(owningGroup)
                 return owningGroup.getInjector();
+            return null;
         }
         
         public final function contains(object:PBObject):Boolean
@@ -45,7 +46,7 @@ package com.pblabs.core
             // If no owning group, add to the global list for debug purposes.
             if(owningGroup == null)
             {
-                PBE._rootGroups.push(this);
+                owningGroup = PBE._rootGroup;
             }
             else
             {
@@ -58,20 +59,6 @@ package com.pblabs.core
         
         public override function destroy():void
         {
-            // Remove from global list if needed.
-            if(owningGroup == null)
-            {
-                var idx:int = PBE._rootGroups.indexOf(this);
-                if(idx == -1)
-                {
-                    Logger.warn(this, "destroy", "Couldn't find self in the global root group list.");
-                }
-                else
-                {
-                    PBE._rootGroups.splice(idx, 1);
-                }
-            }
-            
             super.destroy();
             
             // Wipe the items.

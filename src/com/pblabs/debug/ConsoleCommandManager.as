@@ -8,7 +8,7 @@ package com.pblabs.debug
     
     public class ConsoleCommandManager
     {
-        pb_internal var commands:Dictionary;
+        pb_internal var commands:Dictionary = new Dictionary();
         protected var commandList:Vector.<ConsoleCommand> = new Vector.<ConsoleCommand>();
         protected var commandListOrdered:Boolean = false;
         

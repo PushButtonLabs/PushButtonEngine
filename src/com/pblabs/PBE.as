@@ -11,6 +11,6 @@ package com.pblabs
     {
         public static const IS_SHIPPING_BUILD:Boolean = false;
         
-        pb_internal static var _rootGroups:Vector.<PBGroup> = new Vector.<PBGroup>();
+        pb_internal static var _rootGroup:PBGroup = new PBGroup();
     }
 }

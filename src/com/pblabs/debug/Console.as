@@ -69,7 +69,7 @@ package com.pblabs.debug
         protected var tabCompletionCurrentEnd:int = 0;
         protected var tabCompletionCurrentOffset:int = 0;
  
-        protected var _currentGroup:PBGroup = null;
+        protected var _currentGroup:PBGroup = PBE._rootGroup;
         protected var _currentCommandManager:ConsoleCommandManager = null;
         
         protected var keyBindings:Vector.<KeyBindingEntry> = new Vector.<KeyBindingEntry>();
@@ -86,6 +86,53 @@ package com.pblabs.debug
         [Inject]
         public var owningStage:Stage = null;
         
+        public function Console():void
+        {
+            name = "Console";
+            
+            addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+            addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+            
+            registerKeyBinding("tilde", null, "toggleConsole"); 
+        }
+        
+        [PostInject]
+        public function initialize():void
+        {
+            Logger.registerListener(this);
+            Logger.startup(owningStage);
+            
+            timeManager.addAnimatedObject(this);
+            
+            _currentGroup = PBE._rootGroup;
+            
+            // Set up the default console command manager.
+            _currentCommandManager = new ConsoleCommandManager();
+            _currentGroup.registerManager(ConsoleCommandManager, _currentCommandManager);
+            
+            // Set up some handy helper commands.
+            _currentCommandManager.registerCommand("toggleConsole", toggleConsole, "Hide or show the console.");
+        }
+        
+        public function toggleConsole():void
+        {
+            if(this.stage)
+                stage.removeChild(this);
+            else
+                owningStage.addChild(this);            
+        }
+        
+        protected function onAddedToStage(e:Event):void
+        {
+            _outputBitmap = new Bitmap(new BitmapData(stage.stageWidth, stage.stageHeight, false, 0x0));
+            
+            layout();
+            addListeners();
+        }
+        
+        protected function onRemovedFromStage(e:Event):void
+        {
+        }
         public function registerKeyBinding(keyName:String, downCommand:String, upCommand:String):void
         {
             // Parse the key.
@@ -155,34 +202,6 @@ package com.pblabs.debug
                 }
                 Logger.error(Console, args[0], errorStr);
             }
-        }
-        
-        public function Console():void
-        {
-            name = "Console";
-            
-            addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-            addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-        }
-        
-        [PostInject]
-        public function initialize():void
-        {
-            Logger.registerListener(this);
-            Logger.startup(owningStage);
-            timeManager.addAnimatedObject(this);
-        }
-        
-        protected function onAddedToStage(e:Event):void
-        {
-            _outputBitmap = new Bitmap(new BitmapData(stage.stageWidth, stage.stageHeight, false, 0x0));
-            
-            layout();
-            addListeners();
-        }
-        
-        protected function onRemovedFromStage(e:Event):void
-        {
         }
         
         protected function layout():void
@@ -490,24 +509,16 @@ package com.pblabs.debug
                 const kbe:KeyBindingEntry = keyBindings[i];
                 if(keyboardManager.wasKeyJustPressed(kbe.key.keyCode) && kbe.isDown == false)
                 {
-                    processLine(kbe.downCommand);
+                    if(kbe.downCommand)
+                        processLine(kbe.downCommand);
                     kbe.isDown = true;
                 }
                 else if(keyboardManager.wasKeyJustReleased(kbe.key.keyCode) && kbe.isDown == true)
                 {
-                    processLine(kbe.upCommand);
+                    if(kbe.upCommand)
+                        processLine(kbe.upCommand);
                     kbe.isDown = false;
                 }
-            }
-            
-            if(keyboardManager.wasKeyJustReleased(KeyboardKey.TILDE.keyCode))
-            {
-                if(stage)
-                    stage.removeChild(this);
-                else
-                    owningStage.addChild(this);
-                
-                return;
             }
 
             // Don't draw if we are clean or invisible.
@@ -575,6 +586,7 @@ package com.pblabs.debug
             layout();
             _input.text = "";
             addListeners();
+            
             if(stage)
                 stage.focus = _input;
         }
@@ -582,6 +594,7 @@ package com.pblabs.debug
         public function deactivate():void
         {
             removeListeners();
+            
             if(stage)
                 stage.focus = null;
         }
