@@ -92,6 +92,14 @@ package com.pblabs.core
             return _components[name] as PBComponent;
         }
         
+        public function getAllComponents():Vector.<PBComponent>
+        {
+            var out:Vector.<PBComponent> = new Vector.<PBComponent>();
+            for(var key:String in _components)
+                out.push(_components[key]);
+            return out;
+        }
+        
         public override function initialize():void
         {
             super.initialize();

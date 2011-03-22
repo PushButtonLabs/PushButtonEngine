@@ -1,7 +1,10 @@
 package com.pblabs.debug
 {
 	import flash.display.BitmapData;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -15,6 +18,10 @@ package com.pblabs.debug
 			// Set up the text field.
 			_textField.setTextFormat(_textFormat);
 			_textField.defaultTextFormat = _textFormat;
+            
+            // This makes a big difference in legibility.
+            _textField.antiAliasType = AntiAliasType.ADVANCED;
+            _textField.embedFonts = false;
 		}
 		
 		public function drawLineToBitmap(line:String, x:int, y:int, color:uint, renderTarget:BitmapData):int
@@ -64,11 +71,12 @@ package com.pblabs.debug
 				_textField.text = String.fromCharCode(charCode);
 				
 				newGlyph.bitmap = new BitmapData(_textField.textWidth + 1, 16, true, 0x0);
-				newGlyph.bitmap.draw(_textField);
+                
+				newGlyph.bitmap.draw(_textField, null, null, null, null, true);
 				newGlyph.rect = newGlyph.bitmap.rect;
 				
 				// Store it in cache.
-				_glyphCache[charCode ] = newGlyph;
+				_glyphCache[charCode] = newGlyph;
 			}
 			
 			return _glyphCache[charCode] as Glyph;
@@ -77,11 +85,11 @@ package com.pblabs.debug
 		public function getLineHeight():int
 		{
 			// Do some tall characters.
-			_textField.text = "HPI";
+			_textField.text = "HPI|y";
 			return _textField.getLineMetrics(0).height;
 		}
 		
-		protected const _textFormat:TextFormat = new TextFormat("_typewriter", 11, 0xDDDDDD); 
+		protected const _textFormat:TextFormat = new TextFormat("_typewriter", 11, 0xFFFFFF); 
 		protected const _textField:TextField = new TextField();
 		protected const _glyphCache:Array = [];
 		protected const _colorCache:Array = [];

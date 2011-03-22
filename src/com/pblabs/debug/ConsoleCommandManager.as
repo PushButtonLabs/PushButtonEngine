@@ -82,18 +82,20 @@ package com.pblabs.debug
             });
         }
         
-        protected function init():void
+        public function init():void
         {
-            /*** THESE ARE THE DEFAULT CONSOLE COMMANDS ***/
             registerCommand("help", function(prefix:String = null):void
             {
                 // Get commands in alphabetical order.
                 ensureCommandsOrdered();
                 
-                Logger.print(Console, "Keyboard shortcuts: ");
-                Logger.print(Console, "[SHIFT]-TAB - Cycle through autocompleted commands.");
-                Logger.print(Console, "PGUP/PGDN   - Page log view up/down a page.");
-                Logger.print(Console, "");
+                if(prefix == null)
+                {
+                    Logger.print(Console, "Keyboard shortcuts: ");
+                    Logger.print(Console, "[SHIFT]-TAB - Cycle through autocompleted commands.");
+                    Logger.print(Console, "PGUP/PGDN   - Page log view up/down a page.");
+                    Logger.print(Console, "");                    
+                }
                 
                 // Display results.
                 Logger.print(Console, "Commands:");

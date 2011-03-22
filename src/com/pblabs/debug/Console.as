@@ -10,7 +10,11 @@ package com.pblabs.debug
 {
     import com.pblabs.PBE;
     import com.pblabs.PBUtil;
+    import com.pblabs.core.PBComponent;
+    import com.pblabs.core.PBGameObject;
     import com.pblabs.core.PBGroup;
+    import com.pblabs.core.PBObject;
+    import com.pblabs.core.PBSet;
     import com.pblabs.debug.ConsoleCommandManager;
     import com.pblabs.debug.ILogAppender;
     import com.pblabs.debug.LogColor;
@@ -21,6 +25,7 @@ package com.pblabs.debug
     import com.pblabs.pb_internal;
     import com.pblabs.time.IAnimated;
     import com.pblabs.time.TimeManager;
+    import com.pblabs.util.TypeUtility;
     
     import flash.display.Bitmap;
     import flash.display.BitmapData;
@@ -111,7 +116,162 @@ package com.pblabs.debug
             _currentGroup.registerManager(ConsoleCommandManager, _currentCommandManager);
             
             // Set up some handy helper commands.
+            _currentCommandManager.init();
             _currentCommandManager.registerCommand("toggleConsole", toggleConsole, "Hide or show the console.");
+            _currentCommandManager.registerCommand("cd", changeDirectory, ".. to go up to parent, otherwise index or name to change to subgroup.");
+            _currentCommandManager.registerCommand("ls", listDirectory, "Show the PBGroups in the current PBGroup.");
+            _currentCommandManager.registerCommand("tree", tree, "Dump all objects in current group or below.");
+        }
+        
+        public function tree():void
+        {
+            var count:int = _listPBObjects(_currentGroup, 0);
+            Logger.print(this, "Found " + count + " PBObjects.");
+        }
+        
+        protected function _listPBObjects(current:PBObject, indent:int):int
+        {
+            if (!current)
+                return 0;
+            
+            var type:String = " ("+ TypeUtility.getObjectClassName(current) +")";
+            if(current.name)
+            {
+                Logger.print(this, Console.generateIndent(indent) + current.name + type);
+            }
+            else
+            {
+                Logger.print(this, Console.generateIndent(indent) + "[anonymous]" + type);                
+            }
+            
+            // Recurse if it's a known type.
+            var parentSet:PBSet = current as PBSet;
+            var parentGroup:PBGroup = current as PBGroup;
+            var parentEntity:PBGameObject = current as PBGameObject;
+            
+            var sum:int = 1;
+            var i:int = 0;
+            
+            if(parentSet)
+            {
+                for(i=0; i<parentSet.length; i++)
+                    sum += _listPBObjects(parentSet.getPBObjectAt(i), indent+1);
+            }
+            else if(parentGroup)
+            {
+                for(i=0; i<parentGroup.length; i++)
+                    sum += _listPBObjects(parentGroup.getPBObjectAt(i), indent+1);
+            }
+            else if(parentEntity)
+            {
+                // Get all the components. Components don't count for the sum.
+                var c:Vector.<PBComponent> = parentEntity.getAllComponents();
+                for(i=0; i<c.length; i++)
+                {
+                    var iec:PBComponent = c[i] as PBComponent;
+                    type = " ("+ TypeUtility.getObjectClassName(iec) +")";
+                    Logger.print(Console, Console.generateIndent(indent + 1) + iec.name + type);
+                }
+            }
+            
+            return sum;
+        }
+        
+        protected static function generateIndent(indent:int):String
+        {
+            var str:String = "";
+            for(var i:int=0; i<indent; i++)
+            {
+                // Add 2 spaces for indent
+                str += "  ";
+            }
+            
+            return str;
+        }        
+        
+        public function listDirectory():void
+        {
+            for(var i:int=0; i<_currentGroup.length; i++)
+            {
+                var potentialGroup:PBGroup = _currentGroup.getPBObjectAt(i) as PBGroup;
+                if(potentialGroup == null)
+                    continue;
+                
+                Logger.print(this, "#" + i + ". " + TypeUtility.getClass(_currentGroup) + " name = " + _currentGroup.name);
+            }            
+        }
+        
+        public function changeDirectory(dir:String = null):void
+        {
+            if(dir == null)
+            {
+                Logger.print(this, "Returning to root.");
+                _currentGroup = PBE._rootGroup;
+                return;
+            }
+            
+            dir = dir.toLocaleLowerCase();
+            
+            if(dir == "..")
+            {
+                if(_currentGroup.owningGroup)
+                {
+                    Logger.print(this, "Going to parent group.");
+                    _currentGroup = _currentGroup.owningGroup;
+                }
+                else
+                {
+                    Logger.print(this, "Already at root.");
+                }
+            }
+            else
+            {
+                // Is a child group named as specified?
+                
+                // Look for exact name.
+                for(var i:int=0; i<_currentGroup.length; i++)
+                {
+                    var potentialGroup:PBGroup = _currentGroup.getPBObjectAt(i) as PBGroup;
+                    if(potentialGroup == null)
+                        continue;
+                    
+                    if(!potentialGroup.name || potentialGroup.name.toLocaleLowerCase() != dir)
+                        continue;
+                    
+                    _currentGroup = potentialGroup;
+                    Logger.print(this, "Changed to " + _currentGroup);
+                    return;
+                }
+                
+                // Look for a class name match.
+                for(i=0; i<_currentGroup.length; i++)
+                {
+                    potentialGroup = _currentGroup.getPBObjectAt(i) as PBGroup;
+                    if(potentialGroup == null)
+                        continue;
+
+                    if(TypeUtility.getClass(potentialGroup).toString().toLocaleLowerCase() != dir)
+                        continue;
+                    
+                    _currentGroup = potentialGroup;
+                    Logger.print(this, "Changed to " + _currentGroup);
+                    return;
+                }
+                
+                // Try numerical lookup.
+                var dirAsNumber:int = parseInt(dir);
+                if(dirAsNumber >= 0 && dirAsNumber < _currentGroup.length)
+                {
+                    _currentGroup = _currentGroup.getPBObjectAt(dirAsNumber) as PBGroup;
+                    if(_currentGroup)
+                    {
+                        Logger.print(this, "Changed to " + _currentGroup);
+                        return;                        
+                    }
+                }
+                
+                Logger.warn(this, "cd", "Could not find a group called '" + dir + "'");
+            }
         }
         
         public function toggleConsole():void
@@ -201,12 +361,18 @@ package com.pblabs.debug
             }
             catch(e:Error)
             {
+                if(e is ArgumentError)
+                {
+                    Logger.error(this, args[0], "Argument count mismatch.");
+                    return;
+                }
+                
                 var errorStr:String = "Error: " + e.toString();
                 if(showStackTrace)
                 {
                     errorStr += " - " + e.getStackTrace();
                 }
-                Logger.error(Console, args[0], errorStr);
+                Logger.error(this, args[0], errorStr);
             }
         }
         
@@ -552,13 +718,15 @@ package com.pblabs.debug
             bd.fillRect(bd.rect, 0x0);
             
             // Draw lines.
-            for (var i:int = endLine; i >= startLine; i--)
+            for (i = endLine; i >= startLine; i--)
             {
                 // Skip empty.
                 if (!logCache[i])
                     continue;
                 
-                glyphCache.drawLineToBitmap(logCache[i].text, 0, _outputBitmap.height - (endLine + 1 - i) * glyphCache.getLineHeight(), logCache[i].color, _outputBitmap.bitmapData);
+                glyphCache.drawLineToBitmap(logCache[i].text, 0, 
+                    _outputBitmap.height - (endLine + 1 - i) * glyphCache.getLineHeight() - 6, 
+                    logCache[i].color, _outputBitmap.bitmapData);
             }
             
             Profiler.exit("LogViewer.redrawLog");
@@ -593,7 +761,7 @@ package com.pblabs.debug
             _input.text = "";
             addListeners();
             
-            timeManager.callLater(function()
+            timeManager.callLater(function():void
             {
                 owningStage.focus = _input;                
             });

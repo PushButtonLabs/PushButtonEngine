@@ -38,6 +38,7 @@ package
         public function PBPartyTime()
         {
             rootGroup.initialize();
+            rootGroup.name = "RootGroup";
             rootGroup.registerManager(Stage, stage);
             rootGroup.registerManager(PropertyManager, new PropertyManager());
             rootGroup.registerManager(ConsoleCommandManager, new ConsoleCommandManager());
