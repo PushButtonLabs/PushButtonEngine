@@ -15,11 +15,14 @@ package
     import demos.bindingDemo.BindingDemoScene;
     import demos.circlePickup.CirclePickupScene;
     import demos.circlePickupWithTimeManager.CirclePickupWithTimeManagerScene;
+    import demos.molehill.MolehillScene;
     import demos.mouseFollower.MouseFollowScene;
     import demos.simplestRenderer.SimplestRendererScene;
     
     import flash.display.Sprite;
     import flash.display.Stage;
+    import flash.display.StageAlign;
+    import flash.display.StageScaleMode;
     import flash.events.KeyboardEvent;
     import flash.geom.Point;
     
@@ -30,13 +33,16 @@ package
         
         public var sceneList:Array = 
             [ SimplestRendererScene, BindingDemoScene, MouseFollowScene, 
-                CirclePickupScene, CirclePickupWithTimeManagerScene ];
+                CirclePickupScene, CirclePickupWithTimeManagerScene, MolehillScene ];
         
         public var currentSceneIndex:int = 0;
         public var currentScene:PBGroup;
         
         public function PBPartyTime()
         {
+            stage.align = StageAlign.TOP_LEFT;
+            stage.scaleMode = StageScaleMode.NO_SCALE;
+            
             rootGroup.initialize();
             rootGroup.name = "RootGroup";
             rootGroup.registerManager(Stage, stage);
@@ -70,7 +76,7 @@ package
             currentScene.owningGroup = rootGroup;
             currentScene.initialize();
         }
-            
+        
         
         protected function onKeyUp(ke:KeyboardEvent):void
         {

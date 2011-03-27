@@ -11,15 +11,15 @@ package com.pblabs.core
     
     public class PBGroup extends PBObject
     {
-        protected var items:Vector.<PBObject> = new Vector.<PBObject>();
-        protected var injector:Injector = null;
+        protected var _items:Vector.<PBObject> = new Vector.<PBObject>();
+        protected var _injector:Injector = null;
         
-        pb_internal function getInjector():Injector
+        pb_internal function get injector():Injector
         {
-            if(injector)
-                return injector;
+            if(_injector)
+                return _injector;
             else if(owningGroup)
-                return owningGroup.getInjector();
+                return owningGroup.injector;
             return null;
         }
         
@@ -30,12 +30,12 @@ package com.pblabs.core
         
         public final function get length():int
         {
-            return items.length;
+            return _items.length;
         }
         
         public final function getPBObjectAt(index:int):PBObject
         {
-            return items[index];
+            return _items[index];
         }
         
         public override function initialize():void
@@ -50,9 +50,9 @@ package com.pblabs.core
             }
             else
             {
-                if(injector)
-                    injector.setParentInjector(owningGroup.getInjector());
-
+                if(_injector)
+                    _injector.setParentInjector(owningGroup.injector);
+                
                 owningGroup.injectInto(this);                
             }
         }
@@ -64,59 +64,71 @@ package com.pblabs.core
             // Wipe the items.
             while(length)
                 getPBObjectAt(length-1).destroy();
+            
+            // Shut down the managers we own.
+            if(_injector)
+            {
+                for(var key:* in _injector.mappedValues)
+                {
+                    const val:* = _injector.mappedValues[key];
+                    if(val is IPBManager)
+                        (val as IPBManager).destroy();
+                }
+            }
         }
         
         pb_internal function noteRemove(object:PBObject):void
         {
             // Get it out of the list.
-            var idx:int = items.indexOf(object);
+            var idx:int = _items.indexOf(object);
             if(idx == -1)
                 throw new Error("Can't find PBObject in PBGroup! Inconsistent group membership!");
-            items.splice(idx, 1);
+            _items.splice(idx, 1);
         }
         
         pb_internal function noteAdd(object:PBObject):void
         {
-            items.push(object);
+            _items.push(object);
         }
         
         //---------------------------------------------------------------
-                
+        
         protected function initInjection():void
         {
-            if(injector)
+            if(_injector)
                 return;
             
-            injector = new Injector();
-                        
+            _injector = new Injector();
+            
             if(owningGroup)
-                injector.setParentInjector(owningGroup.getInjector());
+                _injector.setParentInjector(owningGroup.injector);
         }
         
         public function registerManager(clazz:Class, instance:*):void
         {
             initInjection();
+            _injector.mapValue(instance, clazz);
+            _injector.apply(instance);
             
-            injector.mapValue(instance, clazz);
-
-            injector.apply(instance);
+            if(instance is IPBManager)
+                (instance as IPBManager).initialize();
         }
         
         public function getManager(clazz:Class):*
         {
             var res:* = null;
             
-            res = getInjector().getMapping(clazz);
-
+            res = injector.getMapping(clazz);
+            
             if(!res)
                 throw new Error("Can't find manager " + clazz + "!");
             
             return res;
         }
-
+        
         public function injectInto(object:*):void
         {
-            getInjector().apply(object);
+            injector.apply(object);
         }
         
         public function lookup(name:String):PBObject

@@ -19,7 +19,7 @@ package demos.circlePickupWithTimeManager
         public var circleSet:PBSet;
         public var pickerUpper:SimplePartyGameObject;
         public const collisionRadius:Number = 35;
-
+        
         [Inject]
         public var stage:Stage;
         
@@ -35,7 +35,7 @@ package demos.circlePickupWithTimeManager
             circleSet = new PBSet();
             circleSet.owningGroup = this;
             circleSet.initialize();
-                        
+            
             // Make the guy that follows the mouse.
             pickerUpper = makeMouseFollower();
             
@@ -44,14 +44,12 @@ package demos.circlePickupWithTimeManager
                 makeGem(new Point(stage.stageWidth * Math.random(), stage.stageHeight * Math.random()));
             
             timeManager.addTickedObject(this);
-            timeManager.start();
         }
         
         public override function destroy():void
         {
             timeManager.removeTickedObject(this);
-            timeManager.stop();
-
+            
             super.destroy();
         }
         

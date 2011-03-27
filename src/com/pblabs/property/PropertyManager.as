@@ -1,15 +1,24 @@
 package com.pblabs.property
 {
+    import com.pblabs.core.IPBManager;
     import com.pblabs.pb_internal;
-
+    
     use namespace pb_internal;
     
-    public class PropertyManager
+    public class PropertyManager implements IPBManager
     {
         public function PropertyManager()
         {
             // Set up default plugins.
             registerPropertyType("@", new ComponentPlugin());
+        }
+        
+        public function initialize():void
+        {
+        }
+        
+        public function destroy():void
+        {
         }
         
         protected var propertyPlugins:Object = {};
@@ -31,7 +40,7 @@ package com.pblabs.property
                 // Parse and store it.
                 parseCache[property] = [property.charAt(0)].concat(property.substr(1).split("."));
             }
-
+            
             // Either errored or cached at this point.
             
             // Awesome, switch off the type...
@@ -39,7 +48,7 @@ package com.pblabs.property
             const plugin:IPropertyPlugin = propertyPlugins[cached[0]];
             if(!plugin)
                 throw new Error("Unknown prefix '" + cached[0] + "' in '" + property + "'.");
-
+            
             // Let the plugin do its thing.
             plugin.resolve(scope, cached, providedInfo);
             
@@ -62,7 +71,7 @@ package com.pblabs.property
         {
             // Look it up.
             const resPi:PropertyInfo = findProperty(scope, property, cachedPi);
-
+            
             // Get value or return default.
             if(resPi)
                 return resPi.getValue();

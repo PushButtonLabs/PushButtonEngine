@@ -5,7 +5,7 @@ package com.pblabs.core
     import com.pblabs.util.TypeUtility;
     
     import flash.utils.Dictionary;
-
+    
     use namespace pb_internal;
     
     public class PBGameObject extends PBObject
@@ -17,7 +17,7 @@ package com.pblabs.core
         {
             return _deferring;
         }
-
+        
         public function set deferring(value:Boolean):void
         {
             if(_deferring && value == false)
@@ -47,7 +47,7 @@ package com.pblabs.core
             owningGroup.injectInto(component);
             component.doAdd();
         }
-
+        
         public function addComponent(component:PBComponent, name:String = null):void
         {
             if(name)
@@ -114,7 +114,7 @@ package com.pblabs.core
                 // Don't double initialize.
                 if(this[key].owner != null)
                     continue;
-
+                
                 // OK, add the component.
                 const nc:PBComponent = this[key] as PBComponent;
                 
@@ -132,8 +132,10 @@ package com.pblabs.core
             deferring = false;
             
             // Propagate bindings on everything.
-            for(var key2:String in _components)
-                _components[key2].applyBindings();
+            for each(var component:PBComponent in _components)
+            {
+                component.applyBindings();                
+            }
         }
         
         public override function destroy():void

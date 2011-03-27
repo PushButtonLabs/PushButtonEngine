@@ -17,10 +17,14 @@
 package com.pblabs.util
 {
     
+    import com.pblabs.pb_internal;
+    
     import flash.utils.Dictionary;
     import flash.utils.describeType;
     import flash.utils.getDefinitionByName;
-
+    
+    use namespace pb_internal;
+    
     /**
      * The Default implementation for the IInjector interface. It provides
      * some basic functionality for getting an dependency injection system
@@ -28,7 +32,7 @@ package com.pblabs.util
      */
     public class Injector
     {
-
+        
         /**
          * Maps a value to a certain class, so when <code>apply()</code>
          * is called, the value will be injected into any property with the
@@ -42,7 +46,7 @@ package com.pblabs.util
         {
             mappedValues[toClass] = value;
         }
-
+        
         public function getMapping(clazz:Class):*
         {
             if(mappedValues[clazz])
@@ -67,11 +71,11 @@ package com.pblabs.util
             var definition:Class = TypeUtility.getClass(value);
             var targets:Vector.<InjectionTarget> = getInjectionTargets(definition) as Vector.<InjectionTarget>;
             var postConstruct:Vector.<PostInjectionTarget> = getPostConstructTargets(definition) as Vector.<PostInjectionTarget>;
-
+            
             // apply injections to each target
             for each(var target:InjectionTarget in targets) 
-                applyToTarget(target,value);
-
+            applyToTarget(target,value);
+            
             if(targets.length)
             {
                 // apply post construct
@@ -90,7 +94,7 @@ package com.pblabs.util
         {
             parentInjector = injector;
         }
-
+        
         //_____________________________________________________________________
         //	Constructor
         //_____________________________________________________________________
@@ -99,30 +103,30 @@ package com.pblabs.util
             // Initialize the member properties
             mappedValues = new Dictionary();
         }
-
+        
         //_____________________________________________________________________
         //	Protected Properties
         //_____________________________________________________________________
         /**
          * @private
          */
-        protected var mappedValues:Dictionary;
-
+        pb_internal var mappedValues:Dictionary;
+        
         /**
          * @private
          */
-        protected var parentInjector:Injector;
+        pb_internal var parentInjector:Injector;
         
         /**
          * @private
          */
         protected static var injectionTargetCache:Dictionary = new Dictionary();
-
+        
         /**
          * @private
          */
         protected static var postConstructTargetCache:Dictionary = new Dictionary();
-
+        
         //_____________________________________________________________________
         //	Protected methods
         //_____________________________________________________________________
@@ -144,13 +148,13 @@ package com.pblabs.util
             {
                 return injectionTargetCache[value] as Vector.<InjectionTarget>;
             }
-
+            
             // Look over the xml type definition and create injector targets
             var result:Vector.<InjectionTarget> = new Vector.<InjectionTarget>();
-
+            
             var definition:XML = TypeUtility.getTypeDescription(value);
             var target:InjectionTarget;
-
+            
             for each (var node:XML in definition.factory.*.(name() == 'variable' || name() == 'accessor').metadata.(@name == 'Inject'))
             {
                 target = new InjectionTarget();
@@ -159,10 +163,10 @@ package com.pblabs.util
                 target.uri = node.parent().@uri;
                 result.push(target);
             }
-
+            
             return result;
         }
-
+        
         public static function getPostConstructTargets(value:Class):Vector.<PostInjectionTarget>
         {
             // try to find it in the cache
@@ -170,27 +174,27 @@ package com.pblabs.util
             {
                 return postConstructTargetCache[value] as Vector.<PostInjectionTarget>;
             }
-
+            
             // Look over the xml type definition and create injector targets
             var result:Vector.<PostInjectionTarget> = new Vector.<PostInjectionTarget>();
-
+            
             var definition:XML = TypeUtility.getTypeDescription(value);
             var target:PostInjectionTarget;
-
+            
             for each (var node:XML in definition.factory.*.(name() == 'method').metadata.(@name == 'PostInject')) 
             {
                 target = new PostInjectionTarget();
                 target.method = node.parent().@name;
                 result.push(target);
             }
-
+            
             return result;
         }
-
+        
         protected function applyToTarget(target:InjectionTarget,value:Object):void
         {
             var injectedValue:Object = mappedValues[target.definition];
-
+            
             if(!injectedValue)
             {
                 if(parentInjector)
@@ -200,7 +204,7 @@ package com.pblabs.util
                 
                 return;
             }
-
+            
             if(target.uri.length == 0)
             {
                 // Inject the regular way

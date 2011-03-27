@@ -2,26 +2,26 @@ package com.pblabs.core
 {
     import com.pblabs.pb_internal;
     import com.pblabs.property.PropertyManager;
-
+    
     use namespace pb_internal;
     
     public class PBComponent
     {
         [Inject]
         public var propertyManager:PropertyManager;
-
+        
         protected var bindings:Vector.<String>;
         
         private var _safetyFlag:Boolean = false;
         private var _name:String;
-
+        
         pb_internal var _owner:PBGameObject;
-
+        
         public function get name():String
         {
             return _name;
         }
-
+        
         public function set name(value:String):void
         {
             if(_owner)
@@ -29,12 +29,12 @@ package com.pblabs.core
             
             _name = value;
         }
-
+        
         public function get owner():PBGameObject
         {
             return _owner;
         }
-
+        
         public function addBinding(fieldName:String, propertyReference:String):void
         {
             if(!bindings)

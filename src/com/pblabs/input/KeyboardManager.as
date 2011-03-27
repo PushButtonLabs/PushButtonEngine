@@ -1,26 +1,25 @@
 package com.pblabs.input
 {
+    import com.pblabs.core.IPBManager;
     import com.pblabs.time.ITicked;
     import com.pblabs.time.TimeManager;
     
     import flash.display.Stage;
     import flash.events.KeyboardEvent;
-
-    public class KeyboardManager implements ITicked
+    
+    public class KeyboardManager implements ITicked, IPBManager
     {
         [Inject]
         public var stage:Stage;
         
         [Inject]
         public var timeManager:TimeManager;
-
+        
         protected var _keyState:Array = new Array();     // The most recent information on key states
         protected var _keyStateOld:Array = new Array();  // The state of the keys on the previous tick
         protected var _justPressed:Array = new Array();  // An array of keys that were just pressed within the last tick.
         protected var _justReleased:Array = new Array(); // An array of keys that were just released within the last tick.
-
         
-        [PostInject]
         public function initialize():void
         {
             stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -28,11 +27,18 @@ package com.pblabs.input
             timeManager.addTickedObject(this);
         }
         
+        public function destroy():void
+        {
+            stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+            stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+            timeManager.removeTickedObject(this);
+        }
+        
         protected function onKeyDown(ke:KeyboardEvent):void
         {
             _keyState[ke.keyCode] = true;
         }
-
+        
         protected function onKeyUp(ke:KeyboardEvent):void
         {
             _keyState[ke.keyCode] = false;

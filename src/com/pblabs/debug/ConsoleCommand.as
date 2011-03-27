@@ -1,7 +1,7 @@
 package com.pblabs.debug
 {
     import com.pblabs.pb_internal;
-
+    
     public final class ConsoleCommand
     {
         public var name:String;

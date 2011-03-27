@@ -3,7 +3,7 @@ package com.pblabs.debug
     import com.pblabs.pb_internal;
     
     import flash.utils.Dictionary;
-
+    
     use namespace pb_internal;
     
     public class ConsoleCommandManager

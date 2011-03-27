@@ -10,6 +10,7 @@ package com.pblabs.debug
 {
     import com.pblabs.PBE;
     import com.pblabs.PBUtil;
+    import com.pblabs.core.IPBManager;
     import com.pblabs.core.PBComponent;
     import com.pblabs.core.PBGameObject;
     import com.pblabs.core.PBGroup;
@@ -43,14 +44,14 @@ package com.pblabs.debug
     import flash.text.TextFormat;
     import flash.ui.Keyboard;
     import flash.utils.getDefinitionByName;
-        
-	use namespace pb_internal;
-	
+    
+    use namespace pb_internal;
+    
     /**
      * UI to display Logger output and process simple commands from the user.
      * Commands are registered via ConsoleCommandManager.
      */ 
-    public class Console extends Sprite implements ILogAppender, IAnimated
+    public class Console extends Sprite implements ILogAppender, IAnimated, IPBManager
     {
         protected var _messageQueue:Array = [];
         protected var _maxLength:uint = 200000;
@@ -73,7 +74,7 @@ package com.pblabs.debug
         protected var tabCompletionCurrentStart:int = 0;
         protected var tabCompletionCurrentEnd:int = 0;
         protected var tabCompletionCurrentOffset:int = 0;
- 
+        
         protected var _currentGroup:PBGroup = PBE._rootGroup;
         protected var _currentCommandManager:ConsoleCommandManager = null;
         
@@ -101,7 +102,6 @@ package com.pblabs.debug
             registerKeyBinding("tilde", null, "toggleConsole"); 
         }
         
-        [PostInject]
         public function initialize():void
         {
             Logger.registerListener(this);
@@ -121,6 +121,11 @@ package com.pblabs.debug
             _currentCommandManager.registerCommand("cd", changeDirectory, ".. to go up to parent, otherwise index or name to change to subgroup.");
             _currentCommandManager.registerCommand("ls", listDirectory, "Show the PBGroups in the current PBGroup.");
             _currentCommandManager.registerCommand("tree", tree, "Dump all objects in current group or below.");
+        }
+        
+        public function destroy():void
+        {
+            timeManager.removeAnimatedObject(this);
         }
         
         public function tree():void
@@ -249,7 +254,7 @@ package com.pblabs.debug
                     potentialGroup = _currentGroup.getPBObjectAt(i) as PBGroup;
                     if(potentialGroup == null)
                         continue;
-
+                    
                     if(TypeUtility.getClass(potentialGroup).toString().toLocaleLowerCase() != dir)
                         continue;
                     
@@ -590,7 +595,7 @@ package com.pblabs.debug
                         const potentialPrefix:String = list[i].name.substr(0, tabCompletionPrefix.length); 
                         if (potentialPrefix.toLowerCase() != tabCompletionPrefix)
                             continue;
-
+                        
                         // Note it.
                         if (i < tabCompletionCurrentStart)
                             tabCompletionCurrentStart = i;
@@ -692,7 +697,7 @@ package com.pblabs.debug
                     kbe.isDown = false;
                 }
             }
-
+            
             // Don't draw if we are clean or invisible.
             if (_dirtyConsole == false || parent == null)
                 return;

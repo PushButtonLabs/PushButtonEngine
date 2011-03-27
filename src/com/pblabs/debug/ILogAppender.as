@@ -8,8 +8,8 @@
  ******************************************************************************/
 package com.pblabs.debug
 {
-	public interface ILogAppender
-	{
-		function addLogMessage(level:String, loggerName:String, message:String):void;
-	}
+    public interface ILogAppender
+    {
+        function addLogMessage(level:String, loggerName:String, message:String):void;
+    }
 }

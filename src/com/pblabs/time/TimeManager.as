@@ -8,9 +8,10 @@
  ******************************************************************************/
 package com.pblabs.time
 {
-        
+    
     import com.pblabs.PBE;
     import com.pblabs.PBUtil;
+    import com.pblabs.core.IPBManager;
     import com.pblabs.core.PBComponent;
     import com.pblabs.core.PBGroup;
     import com.pblabs.debug.Logger;
@@ -41,7 +42,7 @@ package com.pblabs.time
      * @see ITickedObject
      * @see IAnimatedObject
      */
-    public class TimeManager
+    public class TimeManager implements IPBManager
     {
         [Inject]
         public var stage:Stage;
@@ -156,12 +157,23 @@ package com.pblabs.time
             return _frameCounter;
         }
         
+        public function initialize():void
+        {
+            if(!started)
+                start();
+        }
+        
+        public function destroy():void
+        {
+            if(started)
+                stop();
+        }
+        
         /**
          * Starts the process manager. This is automatically called when the first object
          * is added to the process manager. If the manager is stopped manually, then this
          * will have to be called to restart it.
          */
-        [PostInject]
         public function start():void
         {
             if (started)
@@ -190,7 +202,7 @@ package com.pblabs.time
         {
             if (!started)
             {
-                Logger.warn(this, "stop", "The ProcessManager isn't started.");
+                Logger.warn(this, "stop", "The TimeManager isn't started.");
                 return;
             }
             
@@ -228,7 +240,7 @@ package com.pblabs.time
             
             thinkHeap.enqueue(schedule);
         }
-                
+        
         /**
          * Registers an object to receive frame callbacks.
          * 
@@ -347,7 +359,7 @@ package com.pblabs.time
         }
         
         /**
-         * @return How many objects are depending on the ProcessManager right now?
+         * @return How many objects are depending on the TimeManager right now?
          */
         private function get listenerCount():int
         {

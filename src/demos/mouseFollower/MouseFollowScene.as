@@ -12,6 +12,11 @@ package demos.mouseFollower
         {
             super.initialize();
             
+            createPartyObject();
+        }
+        
+        protected function createPartyObject():void
+        {
             // Create a party object.
             var go:SimplestPartyGameObject = new SimplestPartyGameObject();
             go.owningGroup = this;
