@@ -8,9 +8,9 @@
  ******************************************************************************/
 package com.pblabs.util.version
 {
-	public class BuildVersion
-	{
-		// This will be populated from the BuildVersion.as.templ
-		public static const BUILD_NUMBER:String = "source";
-	}
+    public class BuildVersion
+    {
+        // This will be populated from the BuildVersion.as.templ
+        public static const BUILD_NUMBER:String = "source";
+    }
 }

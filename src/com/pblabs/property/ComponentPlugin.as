@@ -2,7 +2,7 @@ package com.pblabs.property
 {
     import com.pblabs.core.PBComponent;
     import com.pblabs.core.PBGameObject;
-
+    
     public class ComponentPlugin implements IPropertyPlugin
     {
         protected var fieldResolver:FieldPlugin = new FieldPlugin();
@@ -20,7 +20,7 @@ package com.pblabs.property
             
             // Look up the component.
             const component:PBComponent = entity.lookupComponent(cached[1]);
-
+            
             if(cached.length > 2)
             {
                 // Look further into the object. 

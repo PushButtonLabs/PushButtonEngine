@@ -39,7 +39,7 @@ package com.pblabs.time
         {
             _nextThinkTime = timeManager.virtualTime + timeTillThink;
             _nextThinkCallback = nextCallback;
-
+            
             timeManager.queueObject(this);
         }
         
@@ -56,7 +56,7 @@ package com.pblabs.time
             // in the queue.
             _nextThinkCallback = null;
         }
-            
+        
         public function get nextThinkTime():Number
         {
             return _nextThinkTime;

@@ -10,7 +10,7 @@ package com.pblabs.simplest
     {
         [Inject]
         public var stage:Stage;
-
+        
         public var targetProperty:String;
         
         protected override function onAdd():void
@@ -28,7 +28,7 @@ package com.pblabs.simplest
         protected override function onRemove():void
         {
             stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);
-
+            
             super.onRemove();
         }
     }

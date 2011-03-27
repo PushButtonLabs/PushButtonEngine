@@ -18,7 +18,7 @@ package com.pblabs.util
     public interface IPrioritizable
     {
         function get priority():int;
-
+        
         /**
          * Change the priority. You only need to implement this if you want
          * SimplePriorityHeap.reprioritize to work. Otherwise it can

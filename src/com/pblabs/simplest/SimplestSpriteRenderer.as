@@ -19,7 +19,7 @@ package com.pblabs.simplest
         {
             return _position;
         }
-
+        
         public function set position(value:Point):void
         {
             _position = value;
@@ -31,7 +31,7 @@ package com.pblabs.simplest
         protected override function onAdd():void
         {
             super.onAdd();
-                        
+            
             sprite.graphics.lineStyle(2, 0);
             sprite.graphics.beginFill(0xFF00FF);
             sprite.graphics.drawCircle(0, 0, 20);
@@ -49,9 +49,9 @@ package com.pblabs.simplest
         {
             stage.removeChild(sprite);
             stage.removeEventListener(Event.ENTER_FRAME, onFrame);
-
+            
             super.onRemove();
         }
-            
+        
     }
 }
