@@ -22,19 +22,30 @@ package com.pblabs.core
         {
             if(_deferring && value == false)
             {
-                // Initialize deferred components.
-                for(var key:String in _components)
+                var foundDeferred:Boolean = true;
+                
+                while(foundDeferred)
                 {
-                    // Normal entries just have alphanumeric.
-                    if(key.charAt(0) != "!")
-                        continue;
+                    foundDeferred = false;
                     
-                    // It's a deferral, so init it...
-                    doInitialize(_components[key] as PBComponent);
-                    
-                    // ... and nuke the entry.
-                    _components[key] = null;
-                    delete _components[key];
+                    // Initialize deferred components.
+                    for(var key:String in _components)
+                    {
+                        // Normal entries just have alphanumeric.
+                        if(key.charAt(0) != "!")
+                            continue;
+                        
+                        // It's a deferral, so init it...
+                        doInitialize(_components[key] as PBComponent);
+                        
+                        // ... and nuke the entry.
+                        _components[key] = null;
+                        delete _components[key];
+                        
+                        // Indicate we found stuff so keep looking. Otherwise
+                        // we may miss some.
+                        foundDeferred = true;
+                    }
                 }
             }
             
@@ -132,9 +143,11 @@ package com.pblabs.core
             deferring = false;
             
             // Propagate bindings on everything.
-            for each(var component:PBComponent in _components)
+            for(var key2:String in _components)
             {
-                component.applyBindings();                
+                if(!_components[key2].propertyManager)
+                    throw new Error("Failed to inject component properly.");
+                _components[key2].applyBindings();
             }
         }
         

@@ -221,7 +221,7 @@ package com.pblabs.debug
                 var newCounterVal:int = criticalCounterCurrentValues[key];
                 if (criticalCounterLastValues[key] != null && criticalCounterLastValues[key] != newCounterVal)
                 {
-                    for (var i:int = 0; i < graph.height; i++)
+                    for (i = 0; i < graph.height; i++)
                     {
                         graph.setPixel32(0, graph.height - i, Counters.getCriticalCounterColor(key));
                     }
@@ -229,7 +229,7 @@ package com.pblabs.debug
                 }
             }
             // Copy current counter values into old counter values
-            for (var key:String in criticalCounterCurrentValues)
+            for (key in criticalCounterCurrentValues)
             {
                 criticalCounterLastValues[key] = criticalCounterCurrentValues[key];   
             }
