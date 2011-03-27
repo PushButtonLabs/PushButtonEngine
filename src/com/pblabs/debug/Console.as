@@ -115,17 +115,32 @@ package com.pblabs.debug
             _currentCommandManager = new ConsoleCommandManager();
             _currentGroup.registerManager(ConsoleCommandManager, _currentCommandManager);
             
+            // Set up FPS display.
+            _fps = new Stats();
+            _fps.timeManager = timeManager;
+            
+            
             // Set up some handy helper commands.
             _currentCommandManager.init();
             _currentCommandManager.registerCommand("toggleConsole", toggleConsole, "Hide or show the console.");
             _currentCommandManager.registerCommand("cd", changeDirectory, ".. to go up to parent, otherwise index or name to change to subgroup.");
             _currentCommandManager.registerCommand("ls", listDirectory, "Show the PBGroups in the current PBGroup.");
             _currentCommandManager.registerCommand("tree", tree, "Dump all objects in current group or below.");
+            _currentCommandManager.registerCommand("fps", showFps, "Toggle FPS/Memory display.");
         }
         
         public function destroy():void
         {
             timeManager.removeAnimatedObject(this);
+        }
+        
+        protected var _fps:Stats;
+        protected function showFps():void
+        {
+            if(_fps.parent)
+                _fps.parent.removeChild(_fps);
+            else
+                stage.addChild(_fps);
         }
         
         public function tree():void

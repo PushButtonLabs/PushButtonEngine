@@ -46,7 +46,6 @@ package com.pblabs.debug
             addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
         }
         
-        [Inject]
         public var timeManager:TimeManager;
         
         private var timer:int, ms:int, msPrev:int = 0;
