@@ -190,7 +190,7 @@ package com.pblabs.debug
                 {
                     var iec:PBComponent = c[i] as PBComponent;
                     type = " ("+ TypeUtility.getObjectClassName(iec) +")";
-                    Logger.print(Console, Console.generateIndent(indent + 1) + iec.name + type);
+                    Logger.print(this, Console.generateIndent(indent + 1) + iec.name + type);
                 }
             }
             
