@@ -1,6 +1,7 @@
 package demos.molehill
 {
     import com.pblabs.core.IPBManager;
+    import com.pblabs.debug.Logger;
     import com.pblabs.time.IAnimated;
     import com.pblabs.time.TimeManager;
     
@@ -65,46 +66,46 @@ package demos.molehill
             const stageWidthScale:Number = Number(stage.stageWidth*0.5);
             const stageHeightScale:Number = Number(stage.stageHeight*0.5);
 
-            // Vertex 0.
-            vertices[curVertex*6+0] = ((x - w * 0.5) / stageWidthScale) - 1;
-            vertices[curVertex*6+1] = ((y - h * 0.5) / stageHeightScale) - 1;
-            vertices[curVertex*6+2] = 0.5;
+            var curVertIndex:int = curVertex*6;
+            curVertex += 4;
             
-            vertices[curVertex*6+3] = 0;
-            vertices[curVertex*6+4] = 1;
-            vertices[curVertex*6+5] = 0;
-            curVertex++;
+            // Vertex 0.
+            vertices[curVertIndex++] = ((x - w * 0.5) / stageWidthScale) - 1;
+            vertices[curVertIndex++] = ((y - h * 0.5) / stageHeightScale) - 1;
+            vertices[curVertIndex++] = 0.5;
+            
+            vertices[curVertIndex++] = 0;
+            vertices[curVertIndex++] = 1;
+            vertices[curVertIndex++] = 0;
             
             // Vertex 1.
-            vertices[curVertex*6+0] = ((x + w * 0.5) / stageWidthScale) - 1;
-            vertices[curVertex*6+1] = ((y - h * 0.5) / stageHeightScale) - 1;
-            vertices[curVertex*6+2] = 0.5;
+            vertices[curVertIndex++] = ((x + w * 0.5) / stageWidthScale) - 1;
+            vertices[curVertIndex++] = ((y - h * 0.5) / stageHeightScale) - 1;
+            vertices[curVertIndex++] = 0.5;
             
-            vertices[curVertex*6+3] = 1;
-            vertices[curVertex*6+4] = 1;
-            vertices[curVertex*6+5] = 0;
-            curVertex++;
+            vertices[curVertIndex++] = 1;
+            vertices[curVertIndex++] = 1;
+            vertices[curVertIndex++] = 0;
             
             // Vertex 2.
-            vertices[curVertex*6+0] = ((x + w * 0.5) / stageWidthScale) - 1;
-            vertices[curVertex*6+1] = ((y + h * 0.5) / stageHeightScale) - 1;
-            vertices[curVertex*6+2] = 0.5;
+            vertices[curVertIndex++] = ((x + w * 0.5) / stageWidthScale) - 1;
+            vertices[curVertIndex++] = ((y + h * 0.5) / stageHeightScale) - 1;
+            vertices[curVertIndex++] = 0.5;
             
-            vertices[curVertex*6+3] = 0;
-            vertices[curVertex*6+4] = 1;
-            vertices[curVertex*6+5] = 1;
-            curVertex++;
+            vertices[curVertIndex++] = 0;
+            vertices[curVertIndex++] = 1;
+            vertices[curVertIndex++] = 1;
             
             // Vertex 3.
-            vertices[curVertex*6+0] = ((x - w * 0.5) / stageWidthScale) - 1;
-            vertices[curVertex*6+1] = ((y + h * 0.5) / stageHeightScale) - 1;
-            vertices[curVertex*6+2] = 0.5;
+            vertices[curVertIndex++] = ((x - w * 0.5) / stageWidthScale) - 1;
+            vertices[curVertIndex++] = ((y + h * 0.5) / stageHeightScale) - 1;
+            vertices[curVertIndex++] = 0.5;
             
-            vertices[curVertex*6+3] = 1;
-            vertices[curVertex*6+4] = 0;
-            vertices[curVertex*6+5] = 1;
-            curVertex++;
+            vertices[curVertIndex++] = 1;
+            vertices[curVertIndex++] = 0;
+            vertices[curVertIndex++] = 1;
             
+            // Make sure we don't do too many quads.
             if((curVertex/4) > MAX_QUADS)
                 throw new Error("Exceed max quad count!");
         }
@@ -153,19 +154,23 @@ package demos.molehill
         
         private function initContext3D():void
         {
-            context3D.enableErrorChecking = false;
+            Logger.print(this, "Initializing Context3D");
+            context3D.enableErrorChecking = true;
             context3D.configureBackBuffer( stage.stageWidth, stage.stageHeight, 0, true); 
+            
             context3D.setDepthTest(false,Context3DCompareMode.LESS_EQUAL);
             
             // Set up our dynamic vertex buffer.
             vb = context3D.createVertexBuffer(MAX_QUADS*4,6);
             
+            vertices.fixed = false;
             vertices.length = MAX_QUADS * 4 * 6;
             vertices.fixed = true;
             
             // Set up our index buffer once.
             ib = context3D.createIndexBuffer(MAX_QUADS*6);
             
+            indices.fixed = false;
             indices.length = MAX_QUADS * 6;
             indices.fixed = true;
             curIndex = 0;
@@ -181,12 +186,8 @@ package demos.molehill
             }
             ib.uploadFromVector(indices, 0, indices.length);
             
-            // Initialize a simple shader.
+            // Initialize our very simple shader.
             initShaders(context3D);
-            
-            // Start up in a clear state.
-            context3D.clear(0, 0, 1);
-            context3D.present();
         }
         
         public function initialize():void

@@ -41,9 +41,8 @@ package demos.molehill
             var go:MolehillGameObject = new MolehillGameObject();
             go.owningGroup = this;
             
-            go.render = new QuadRenderer();
-            go.render.position = new Point(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight);
             go.render.size = new Point(PBUtil.pickWithBias(10, 100), PBUtil.pickWithBias(10, 100));
+            go.render.addBinding("position", "@mover.position");
 
             go.initialize();
         }

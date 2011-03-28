@@ -4,6 +4,7 @@ package demos.molehill
     
     public class MolehillGameObject extends PBGameObject
     {
-        public var render:QuadRenderer;
+        public var render:QuadRenderer = new QuadRenderer();
+        public var mover:RandomMover = new RandomMover();
     }
 }
