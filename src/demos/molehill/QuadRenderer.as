@@ -9,16 +9,16 @@ package demos.molehill
         [Inject]
         public var scene:QuadScene;
 
-        public var texture:String;
-        public var position:Point;
-        public var rotation:Number;
-        public var size:Point;
+        public var texture:String = "*white";
+        public var position:Point = new Point(100, 100);
+        public var rotation:Number = 0;
+        public var size:Point = new Point(10, 10);
         
         public override function onFrame():void
         {
             super.onFrame();
             
-            scene.addQuad(texture, position.x position.y, size.x, size.y, rotation);
+            scene.addQuad(texture, position.x, position.y, size.x, size.y, rotation);
         }
         
     }

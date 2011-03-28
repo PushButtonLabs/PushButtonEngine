@@ -1,10 +1,13 @@
 package demos.molehill
 {
+    import com.pblabs.PBUtil;
+    import com.pblabs.core.PBGameObject;
     import com.pblabs.core.PBGroup;
     import com.pblabs.time.ITicked;
     import com.pblabs.time.TimeManager;
     
     import flash.display.Stage;
+    import flash.geom.Point;
     
     public class MolehillScene extends PBGroup implements ITicked
     {
@@ -20,6 +23,9 @@ package demos.molehill
             registerManager(TimeManager, timeManager);
             registerManager(QuadScene, new QuadScene());
             
+            for(var i:int=0; i<1000; i++)
+                createQuad();
+            
             timeManager.addTickedObject(this);
         }
         
@@ -28,6 +34,18 @@ package demos.molehill
             timeManager.removeTickedObject(this);
             
             super.destroy();
+        }
+        
+        public function createQuad():void
+        {
+            var go:MolehillGameObject = new MolehillGameObject();
+            go.owningGroup = this;
+            
+            go.render = new QuadRenderer();
+            go.render.position = new Point(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight);
+            go.render.size = new Point(PBUtil.pickWithBias(10, 100), PBUtil.pickWithBias(10, 100));
+
+            go.initialize();
         }
         
         public function onTick():void
