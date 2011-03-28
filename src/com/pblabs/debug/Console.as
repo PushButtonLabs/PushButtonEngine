@@ -25,6 +25,7 @@ package com.pblabs.debug
     import com.pblabs.input.KeyboardManager;
     import com.pblabs.pb_internal;
     import com.pblabs.time.IAnimated;
+    import com.pblabs.time.ITicked;
     import com.pblabs.time.TimeManager;
     import com.pblabs.util.TypeUtility;
     
@@ -51,7 +52,7 @@ package com.pblabs.debug
      * UI to display Logger output and process simple commands from the user.
      * Commands are registered via ConsoleCommandManager.
      */ 
-    public class Console extends Sprite implements ILogAppender, IAnimated, IPBManager
+    public class Console extends Sprite implements ILogAppender, ITicked, IPBManager
     {
         protected var _messageQueue:Array = [];
         protected var _maxLength:uint = 200000;
@@ -100,6 +101,7 @@ package com.pblabs.debug
             addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
             
             registerKeyBinding("tilde", null, "toggleConsole"); 
+            registerKeyBinding("p", "profilerOn", "profilerOff"); 
         }
         
         public function initialize():void
@@ -107,7 +109,7 @@ package com.pblabs.debug
             Logger.registerListener(this);
             Logger.startup(owningStage);
             
-            timeManager.addAnimatedObject(this);
+            timeManager.addTickedObject(this);
             
             _currentGroup = PBE._rootGroup;
             
@@ -119,7 +121,6 @@ package com.pblabs.debug
             _fps = new Stats();
             _fps.timeManager = timeManager;
             
-            
             // Set up some handy helper commands.
             _currentCommandManager.init();
             _currentCommandManager.registerCommand("toggleConsole", toggleConsole, "Hide or show the console.");
@@ -127,11 +128,13 @@ package com.pblabs.debug
             _currentCommandManager.registerCommand("ls", listDirectory, "Show the PBGroups in the current PBGroup.");
             _currentCommandManager.registerCommand("tree", tree, "Dump all objects in current group or below.");
             _currentCommandManager.registerCommand("fps", showFps, "Toggle FPS/Memory display.");
+            _currentCommandManager.registerCommand("profilerOn", profilerOn, "Turn profiler on.");
+            _currentCommandManager.registerCommand("profilerOff", profilerOff, "Turn profiler off and dump results.");
         }
         
         public function destroy():void
         {
-            timeManager.removeAnimatedObject(this);
+            timeManager.removeTickedObject(this);
         }
         
         protected var _fps:Stats;
@@ -141,6 +144,18 @@ package com.pblabs.debug
                 _fps.parent.removeChild(_fps);
             else
                 stage.addChild(_fps);
+        }
+        
+        protected function profilerOn():void
+        {
+            Profiler.enabled = true;
+        }
+        
+        protected function profilerOff():void
+        {
+            Profiler.enabled = false;
+            Profiler.report();
+            Profiler.wipe();
         }
         
         public function tree():void
@@ -693,7 +708,7 @@ package com.pblabs.debug
             return Math.floor(roundedHeight / glyphCache.getLineHeight());
         }
         
-        public function onFrame():void
+        public function onTick():void
         {
             // Check the keybindings.
             for(var i:int=0; i<keyBindings.length; i++)

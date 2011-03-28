@@ -26,7 +26,7 @@ package
     import flash.events.KeyboardEvent;
     import flash.geom.Point;
     
-    [SWF(frameRate="32")]
+    [SWF(frameRate="32",wmode="direct")]
     public class PBPartyTime extends Sprite
     {
         public var rootGroup:PBGroup = new PBGroup();

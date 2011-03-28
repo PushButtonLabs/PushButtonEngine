@@ -24,14 +24,14 @@ package com.pblabs.input
         {
             stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
             stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-            timeManager.addTickedObject(this);
+            timeManager.addTickedObject(this, 10.0);
         }
         
         public function destroy():void
         {
+            timeManager.removeTickedObject(this);
             stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
             stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-            timeManager.removeTickedObject(this);
         }
         
         protected function onKeyDown(ke:KeyboardEvent):void
@@ -46,12 +46,7 @@ package com.pblabs.input
         
         public function onTick():void
         {
-            // This function tracks which keys were just pressed (or released) within the last tick.
-            // It should be called at the beginning of the tick to give the most accurate responses possible.
-            
-            var cnt:int;
-            
-            for (cnt = 0; cnt < _keyState.length; cnt++)
+            for (var cnt:int = 0; cnt < _keyState.length; cnt++)
             {
                 if (_keyState[cnt] && !_keyStateOld[cnt])
                     _justPressed[cnt] = true;

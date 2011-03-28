@@ -45,20 +45,20 @@ package com.pblabs.debug
         {
             if (!_currentNode)
             {
-                _rootNode=new ProfileInfo("Root")
-                _currentNode=_rootNode;
+                _rootNode = new ProfileInfo("Root")
+                _currentNode = _rootNode;
             }
             
             // If we're at the root then we can update our internal enabled state.
             if (_stackDepth == 0)
             {
-                _reallyEnabled=enabled;
-                
-                if (_wantWipe)
-                    doWipe();
+                _reallyEnabled = enabled;
                 
                 if (_wantReport)
                     doReport();
+
+                if (_wantWipe)
+                    doWipe();
             }
             
             // Update stack depth and early out.
@@ -67,18 +67,18 @@ package com.pblabs.debug
                 return;
             
             // Look for child; create if absent.
-            var newNode:ProfileInfo=_currentNode.children[blockName];
+            var newNode:ProfileInfo = _currentNode.children[blockName];
             if (!newNode)
             {
-                newNode=new ProfileInfo(blockName, _currentNode);
-                _currentNode.children[blockName]=newNode;
+                newNode = new ProfileInfo(blockName, _currentNode);
+                _currentNode.children[blockName] = newNode;
             }
             
             // Push onto stack.
-            _currentNode=newNode;
+            _currentNode = newNode;
             
             // Start timing the child node. Too bad you can't QPC from Flash. ;)
-            _currentNode.startTime=flash.utils.getTimer();
+            _currentNode.startTime = getTimer();
         }
         
         /**
@@ -95,17 +95,17 @@ package com.pblabs.debug
                 throw new Error("Mismatched Profiler.enter/Profiler.exit calls, got '" + _currentNode.name + "' but was expecting '" + blockName + "'");
             
             // Update stats for this node.
-            var elapsedTime:int=flash.utils.getTimer() - _currentNode.startTime;
+            const elapsedTime:int = getTimer() - _currentNode.startTime;
             _currentNode.activations++;
-            _currentNode.totalTime+=elapsedTime;
+            _currentNode.totalTime += elapsedTime;
             if (elapsedTime > _currentNode.maxTime)
-                _currentNode.maxTime=elapsedTime;
+                _currentNode.maxTime = elapsedTime;
             if (elapsedTime < _currentNode.minTime)
-                _currentNode.minTime=elapsedTime;
+                _currentNode.minTime = elapsedTime;
             
             // Pop the stack.
-            var lastNode:ProfileInfo = _currentNode;
-            _currentNode=_currentNode.parent;
+            const lastNode:ProfileInfo = _currentNode;
+            _currentNode = _currentNode.parent;
         }
         
         /**
@@ -221,15 +221,19 @@ package com.pblabs.debug
             // Sort and draw our kids.
             var tmpArray:Array=new Array();
             for each (childPi in pi.children)
-            tmpArray.push(childPi);
+            {
+                tmpArray.push(childPi);
+            }
             tmpArray.sortOn("totalTime", Array.NUMERIC | Array.DESCENDING);
             for each (childPi in tmpArray)
-            report_R(childPi, indent + 1);
+            {
+                report_R(childPi, indent + 1);
+            }
         }
         
         private static function doWipe(pi:ProfileInfo=null):void
         {
-            _wantWipe=false;
+            _wantWipe = false;
             
             if (!pi)
             {
@@ -238,8 +242,11 @@ package com.pblabs.debug
             }
             
             pi.wipe();
+            
             for each (var childPi:ProfileInfo in pi.children)
-            doWipe(childPi);
+            {
+                doWipe(childPi);
+            }
         }
         
         /**
@@ -269,14 +276,16 @@ final class ProfileInfo
     
     final public function ProfileInfo(n:String, p:ProfileInfo=null)
     {
-        name=n;
-        parent=p;
+        name = n;
+        parent = p;
     }
     
     final public function wipe():void
     {
-        startTime=totalTime=activations=0;
-        maxTime=int.MIN_VALUE;
-        minTime=int.MAX_VALUE;
+        startTime = 0;
+        totalTime = 0;
+        activations = 0;
+        maxTime = int.MIN_VALUE;
+        minTime = int.MAX_VALUE;
     }
 }

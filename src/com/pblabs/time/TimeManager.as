@@ -585,7 +585,7 @@ package com.pblabs.time
             processScheduledObjects();
             
             // Do the onTick callbacks, noting time in profiler appropriately.
-            Profiler.enter("Tick");
+            Profiler.enter("tick");
             
             duringAdvance = true;
             for(var j:int=0; j<tickedObjects.length; j++)
@@ -600,7 +600,7 @@ package com.pblabs.time
             }
             duringAdvance = false;
             
-            Profiler.exit("Tick");
+            Profiler.exit("tick");
             
             // Update virtual time by subtracting from accumulator.
             _virtualTime += TICK_RATE_MS;

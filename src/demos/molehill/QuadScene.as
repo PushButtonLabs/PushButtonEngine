@@ -2,6 +2,7 @@ package demos.molehill
 {
     import com.pblabs.core.IPBManager;
     import com.pblabs.debug.Logger;
+    import com.pblabs.debug.Profiler;
     import com.pblabs.time.IAnimated;
     import com.pblabs.time.TimeManager;
     
@@ -36,8 +37,10 @@ package demos.molehill
         protected var textures:Dictionary = new Dictionary();
         
         protected var currentTex:String = null;
+        
         protected var vertices:Vector.<Number> = new Vector.<Number>();
         protected var curVertex:int = 0;
+        
         protected var indices:Vector.<uint> = new Vector.<uint>();
         protected var curIndex:int = 0;
         
@@ -113,14 +116,14 @@ package demos.molehill
         public function onFrame():void
         {
             // Clear the framebuffer.
-            context3D.clear();
+            context3D.clear(1, 1, 1);
             
             // Draw some dynamic quads.
             vb.uploadFromVector(vertices, 0, curVertex);
             context3D.setVertexBufferAt(0, vb, 0, Context3DVertexBufferFormat.FLOAT_3);
             context3D.setVertexBufferAt(1, vb, 3, Context3DVertexBufferFormat.FLOAT_3);
             context3D.setProgram(_shaderProgram);
-            context3D.drawTriangles(ib, 0, (curVertex/4)*6);
+            context3D.drawTriangles(ib, 0, (curVertex/4)*2);
             
             // Clean up.
             context3D.setVertexBufferAt(0, null);
