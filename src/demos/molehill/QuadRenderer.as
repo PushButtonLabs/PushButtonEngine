@@ -1,12 +1,25 @@
 package demos.molehill
 {
-    import com.pblabs.core.PBComponent;
+    import com.pblabs.time.AnimatedComponent;
     
-    public class QuadRenderer extends PBComponent
+    import flash.geom.Point;
+    
+    public class QuadRenderer extends AnimatedComponent
     {
-        public function QuadRenderer()
+        [Inject]
+        public var scene:QuadScene;
+
+        public var texture:String;
+        public var position:Point;
+        public var rotation:Number;
+        public var size:Point;
+        
+        public override function onFrame():void
         {
-            super();
+            super.onFrame();
+            
+            scene.addQuad(texture, position.x position.y, size.x, size.y, rotation);
         }
+        
     }
 }

@@ -2,6 +2,7 @@ package demos.molehill
 {
     import com.pblabs.core.IPBManager;
     import com.pblabs.time.IAnimated;
+    import com.pblabs.time.TimeManager;
     
     import flash.display.BitmapData;
     import flash.display.Stage;
@@ -22,6 +23,9 @@ package demos.molehill
     {
         [Inject]
         public var stage:Stage;
+        
+        [Inject]
+        public var timeManager:TimeManager; 
         
         public var stage3D:Stage3D;        
         public var context3D:Context3D;
@@ -85,7 +89,7 @@ package demos.molehill
         private function initContext3D():void
         {
             context3D.enableErrorChecking = false;
-            context3D.configureBackBuffer( stage.stageWidth, stage.stageHeight, 0, true); // fixed size
+            context3D.configureBackBuffer( stage.stageWidth, stage.stageHeight, 0, true); 
             context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA,Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
             context3D.setDepthTest(true,Context3DCompareMode.LESS_EQUAL);
             
@@ -111,15 +115,21 @@ package demos.molehill
             {
                 initContext3D();
             }
+            
+            timeManager.addAnimatedObject(this, -10.0);
         }
         
         public function destroy():void
         {
+            timeManager.removeAnimatedObject(this);
+
             if(context3D)
                 context3D.dispose();
+            stage.invalidate();
         }
     }
 }
+
 import flash.display.BitmapData;
 import flash.display3D.textures.Texture;
 
