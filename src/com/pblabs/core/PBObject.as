@@ -11,6 +11,11 @@ package com.pblabs.core
         pb_internal var _owningGroup:PBGroup;
         pb_internal var _sets:Vector.<PBSet>;
         
+        public function PBObject(_name:String = null)
+        {
+            name = _name;
+        }
+        
         public function get sets():Vector.<PBSet>
         {
             return _sets;

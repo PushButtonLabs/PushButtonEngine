@@ -13,6 +13,11 @@ package com.pblabs.core
         private var _deferring:Boolean = true;
         private var _components:Dictionary = new Dictionary();
         
+        public function PBGameObject(_name:String = null)
+        {
+            super(_name);
+        }
+
         public function get deferring():Boolean
         {
             return _deferring;

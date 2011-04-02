@@ -8,6 +8,11 @@ package com.pblabs.core
     {
         protected var items:Vector.<PBObject> = new Vector.<PBObject>;
         
+        public function PBSet(_name:String = null)
+        {
+            super(_name);
+        }
+
         public function add(object:PBObject):void
         {
             items.push(object);

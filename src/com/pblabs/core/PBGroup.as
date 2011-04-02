@@ -14,6 +14,11 @@ package com.pblabs.core
         protected var _items:Vector.<PBObject> = new Vector.<PBObject>();
         protected var _injector:Injector = null;
         
+        public function PBGroup(_name:String = null)
+        {
+            super(_name);
+        }
+        
         pb_internal function get injector():Injector
         {
             if(_injector)

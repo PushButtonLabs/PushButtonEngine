@@ -44,7 +44,7 @@ package
             stage.scaleMode = StageScaleMode.NO_SCALE;
             
             rootGroup.initialize();
-            rootGroup.name = "RootGroup";
+            rootGroup.name = "PBEDemoGroup";
             rootGroup.registerManager(Stage, stage);
             rootGroup.registerManager(PropertyManager, new PropertyManager());
             rootGroup.registerManager(ConsoleCommandManager, new ConsoleCommandManager());
