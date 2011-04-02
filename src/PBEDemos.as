@@ -27,7 +27,7 @@ package
     import flash.geom.Point;
     
     [SWF(frameRate="32",wmode="direct")]
-    public class PBPartyTime extends Sprite
+    public class PBEDemos extends Sprite
     {
         public var rootGroup:PBGroup = new PBGroup();
         
@@ -38,7 +38,7 @@ package
         public var currentSceneIndex:int = 0;
         public var currentScene:PBGroup;
         
-        public function PBPartyTime()
+        public function PBEDemos()
         {
             stage.align = StageAlign.TOP_LEFT;
             stage.scaleMode = StageScaleMode.NO_SCALE;
