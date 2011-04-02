@@ -8,6 +8,11 @@ package com.pblabs.core
     
     use namespace pb_internal;
     
+    /**
+     * Container class for PBComponent. Most game objects are made by 
+     * instantiating PBGameObject and filling it with one or more PBComponent
+     * instances.
+     */
     public class PBGameObject extends PBObject
     {
         private var _deferring:Boolean = true;

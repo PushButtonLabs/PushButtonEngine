@@ -4,9 +4,14 @@ package com.pblabs.core
     
     use namespace pb_internal;
     
+    /**
+     * Base class for things that have names, lifecycles, and exist in a PBSet or
+     * PBGroup.
+     */
     public class PBObject
     {
-        public var name:String;
+        private var _name:String;
+        private var _active:Boolean = false;
         
         pb_internal var _owningGroup:PBGroup;
         pb_internal var _sets:Vector.<PBSet>;
@@ -16,6 +21,25 @@ package com.pblabs.core
             name = _name;
         }
         
+        /**
+         * Name of the PBObject. Used for dynamic lookups and debugging.
+         */
+        public function get name():String
+        {
+            return _name;
+        }
+
+        /**
+         * @private
+         */
+        public function set name(value:String):void
+        {
+            if(_active && _owningGroup)
+                throw new Error("Cannot change PBObject name after initialize() is called and while in a PBGroup.");
+            
+            _name = value;
+        }
+
         public function get sets():Vector.<PBSet>
         {
             return _sets;
@@ -53,13 +77,23 @@ package com.pblabs.core
             _sets.splice(idx, 1);            
         }
         
+        /**
+         * Called to initialize the PBObject. The PBObject must be in a PBGroup
+         * before calling this (ie, set owningGroup).
+         */
         public function initialize():void
         {
             // Error if not in a group.
             if(_owningGroup == null)
                 throw new Error("Can't initialize a PBObject without an owning PBGroup!");
+            
+            _active = true;
         }
         
+        /**
+         * Called to destroy the PBObject: remove it from sets and groups, and do
+         * other end of life cleanup.
+         */
         public function destroy():void
         {
             // Remove from sets.
@@ -75,6 +109,8 @@ package com.pblabs.core
                 _owningGroup.noteRemove(this);
                 _owningGroup = null;                
             }
+            
+            _active = false;            
         }
     }
 }

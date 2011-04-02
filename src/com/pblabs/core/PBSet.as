@@ -4,6 +4,11 @@ package com.pblabs.core
     
     use namespace pb_internal
     
+    /**
+     * PBSet provides safe references to one or more PBObjects. When the
+     * referenced PBObjects are destroy()ed, then they are automatically removed
+     * from any PBSets. 
+     */
     public class PBSet extends PBObject
     {
         protected var items:Vector.<PBObject> = new Vector.<PBObject>;

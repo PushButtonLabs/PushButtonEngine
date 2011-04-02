@@ -5,6 +5,15 @@ package com.pblabs.core
     
     use namespace pb_internal;
     
+    /**
+     * Base class for most game functionality. Contained in a PBGameObject.
+     * 
+     * Dependency injection is fulfilled based on the PBGroup containing the
+     * owning PBGameObject.
+     * 
+     * Provides a generic data binding system as well as callbacks when
+     * the component is added to or removed from a PBGameObject.
+     */
     public class PBComponent
     {
         [Inject]
@@ -30,6 +39,9 @@ package com.pblabs.core
             _name = value;
         }
         
+        /**
+         * What PBGameObject contains us, if any?
+         */
         public function get owner():PBGameObject
         {
             return _owner;

@@ -9,6 +9,11 @@ package com.pblabs.core
     
     use namespace pb_internal;
     
+    /**
+     * PBGroup provides lifecycle functionality (PBObjects in it are destroy()ed
+     * when it is destroy()ed), as well as dependency injection (see
+     * registerManager).
+     */
     public class PBGroup extends PBObject
     {
         protected var _items:Vector.<PBObject> = new Vector.<PBObject>();
