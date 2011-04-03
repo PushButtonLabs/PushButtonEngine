@@ -30,4 +30,4 @@ The PushButton Engine is covered under the MIT license in its entirety,
 not including 3rd party components. Please read LICENSE for more 
 information on the MIT license.
 
-Copyright 2009-2010 PushButton Labs, LLC. All rights reserved.
+Copyright 2009-2011 PushButton Labs, LLC. All rights reserved.
