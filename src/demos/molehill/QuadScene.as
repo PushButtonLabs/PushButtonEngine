@@ -219,6 +219,10 @@ package demos.molehill
             
             if(context3D)
                 context3D.dispose();
+            
+            if(stage3D)
+                stage3D.viewPort = new Rectangle();
+            
             stage.invalidate();
         }
     }
