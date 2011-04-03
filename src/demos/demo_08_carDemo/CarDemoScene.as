@@ -1,0 +1,84 @@
+package demos.demo_08_carDemo
+{
+    import com.pblabs.core.PBGroup;
+    import com.pblabs.input.KeyboardKey;
+    import com.pblabs.input.KeyboardManager;
+    import com.pblabs.time.ITicked;
+    import com.pblabs.time.TimeManager;
+    
+    import flash.display.Sprite;
+    import flash.display.Stage;
+    import flash.text.TextField;
+    import flash.text.TextFieldAutoSize;
+    import flash.text.TextFormat;
+    
+    public class CarDemoScene extends PBGroup implements ITicked
+    {
+        [Inject]
+        public var stage:Stage;
+        
+        [Inject]
+        public var timeManager:TimeManager;
+        
+        [Inject]
+        public var keyboardManager:KeyboardManager;
+        
+        public var gas:int = 1000;
+        public var velocity:Number = 0;
+        public var position:Number = 0;
+        
+        public var circleSprite:Sprite = new Sprite();
+        public var gasIndicator:TextField = new TextField();
+        
+        public override function initialize():void
+        {
+            super.initialize();
+            
+            stage.addChild(circleSprite);
+            stage.addChild(gasIndicator);
+            
+            gasIndicator.y = stage.stageHeight - 64;
+            gasIndicator.autoSize = TextFieldAutoSize.LEFT;
+            gasIndicator.mouseEnabled = false;
+            gasIndicator.textColor = 0x0;
+            gasIndicator.defaultTextFormat = new TextFormat(null, 48, 0x0, true);
+            
+            redrawCircle();
+            
+            timeManager.addTickedObject(this);
+        }
+        
+        public function onTick():void
+        {
+            if(keyboardManager.isKeyDown(KeyboardKey.A.keyCode))
+            {
+                gas -= 1;
+                velocity += 1 * (stage.stageWidth / 800);
+            }
+            
+            velocity *= 0.9;
+            position += velocity;
+            
+            redrawCircle();
+            
+            gasIndicator.text = "Gas: " + gas;
+        }
+        
+        public function redrawCircle():void
+        {
+            circleSprite.graphics.clear();
+            circleSprite.graphics.beginFill(keyboardManager.isKeyDown(KeyboardKey.A.keyCode) ? 0x00FF00 : 0xFF0000);
+            circleSprite.graphics.drawCircle(100 + position / 10, stage.stageHeight / 2, stage.stageHeight / 4);            
+        }
+        
+        public override function destroy():void
+        {
+            timeManager.removeTickedObject(this);
+            
+            stage.removeChild(gasIndicator);
+            stage.removeChild(circleSprite);
+            
+            super.destroy();
+        }
+    }
+}
