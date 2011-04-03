@@ -26,6 +26,7 @@ package
     import flash.display.Stage;
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
+    import flash.events.Event;
     import flash.events.KeyboardEvent;
     import flash.geom.Point;
     import flash.text.TextField;
@@ -66,6 +67,8 @@ package
         
         // UI Elements.
         public var sceneCaption:TextField = new TextField();
+        public var usageCaption:TextField = new TextField();
+        public var pauseCaption:TextField = new TextField();
         
         /**
          * Initialize the demo and show the first scene.
@@ -90,18 +93,70 @@ package
             
             // Listen for keyboard events.
             stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+            
+            // Detect when the app gains or loses focus; we will display a 
+            // pause caption in this case and pause the TimeManager.
+            stage.addEventListener(Event.DEACTIVATE, onDeactivate);
+            stage.addEventListener(Event.ACTIVATE, onActivate);
 
             // Set up the scene caption.
             sceneCaption.autoSize = TextFieldAutoSize.LEFT;
             sceneCaption.text = "Loading..";
+            sceneCaption.mouseEnabled = false;
             sceneCaption.textColor = 0x0;
             sceneCaption.defaultTextFormat = new TextFormat(null, 48, 0x0, true);
             addChild(sceneCaption);
+            
+            // Set up the usage caption.
+            usageCaption.autoSize = TextFieldAutoSize.CENTER;
+            usageCaption.y = stage.stageHeight - 32;
+            usageCaption.x = 0;
+            usageCaption.mouseEnabled = false;
+            usageCaption.width = stage.stageWidth;
+            usageCaption.defaultTextFormat = new TextFormat(null, 24, 0x0, true);
+            usageCaption.text = "~ for console, < for previous demo, > for next demo.";
+            usageCaption.textColor = 0x0;
+            addChild(usageCaption);
+            
+            // Set up the paused caption.
+            pauseCaption.autoSize = TextFieldAutoSize.CENTER;
+            pauseCaption.y = stage.stageHeight/2 - 64;
+            pauseCaption.x = 0;
+            pauseCaption.mouseEnabled = false;
+            pauseCaption.width = stage.stageWidth;
+            pauseCaption.defaultTextFormat = new TextFormat(null, 48, 0xFF0000, true);
+            pauseCaption.text = "Paused!";
+            pauseCaption.textColor = 0x0;
+            addChild(pauseCaption);
             
             // Make sure first scene is loaded.
             updateScene();
         }
         
+        /**
+         * Called when we lose focus; we fade in the pause caption and set
+         * the TimeManager timeScale to zero to pause our game. Note this only
+         * affects things that use the TimeManager, not components that directly
+         * listen for Event.ENTER_FRAME! 
+         */
+        protected function onDeactivate(e:Event):void
+        {
+            TweenMax.to(pauseCaption, 1.0, {alpha: 1});
+            (rootGroup.getManager(TimeManager) as TimeManager).timeScale = 0;
+        }
+
+        /**
+         * Called when we gain focus; we fade out the pause caption and set
+         * the TimeManager timeScale to one to resume our game. Note this only
+         * affects things that use the TimeManager, not components that directly
+         * listen for Event.ENTER_FRAME! 
+         */
+        protected function onActivate(e:Event):void
+        {
+            TweenMax.to(pauseCaption, 1.0, {alpha: 0});
+            (rootGroup.getManager(TimeManager) as TimeManager).timeScale = 1;
+        }
+
         /**
          * Called when the scene index is changed, to make sure the index is
          * valid, then to destroy the old demo scene, create the new demo scene,

@@ -51,13 +51,13 @@ package demos.circlePickupWithTimeManager
         [Inject]
         public var stage:Stage;
         
-        public var timeManager:TimeManager = new TimeManager();
+        // Get the root group's TimeManager (instantiated in PBEDemos.as)
+        [Inject]
+        public var timeManager:TimeManager;
         
         public override function initialize():void
         {
             super.initialize();
-            
-            registerManager(TimeManager, timeManager);
             
             // Set up the PBSet for the gems.
             gemSet = new PBSet();

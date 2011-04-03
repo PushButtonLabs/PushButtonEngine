@@ -20,13 +20,13 @@ package demos.molehill
         [Inject]
         public var stage:Stage;
         
-        public var timeManager:TimeManager = new TimeManager();
+        [Inject]
+        public var timeManager:TimeManager;
         
         public override function initialize():void
         {
             super.initialize();
             
-            registerManager(TimeManager, timeManager);
             registerManager(QuadScene, new QuadScene());
             
             for(var i:int=0; i<1000; i++)
