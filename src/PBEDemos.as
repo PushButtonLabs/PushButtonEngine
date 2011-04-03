@@ -55,9 +55,10 @@ package
         public var rootGroup:PBGroup = new PBGroup();
 
         // List of the demo scenes we will cycle amongst.
+        // The molehill demo requires a molehill enabled dev environment.
         public var sceneList:Array = 
             [ SimplestRendererScene, BindingDemoScene, MouseFollowerScene, 
-                CirclePickupScene, CirclePickupWithTimeManagerScene, MolehillScene ];
+                CirclePickupScene, CirclePickupWithTimeManagerScene /*, MolehillScene*/ ];
         
         // Keep track of the current demo scene.
         public var currentSceneIndex:int = 0;
