@@ -18,12 +18,18 @@ package com.pblabs.core
             super(_name);
         }
 
+        /**
+         * Add a PBObject to the set. 
+         */
         public function add(object:PBObject):void
         {
             items.push(object);
             object.noteSetAdd(this);
         }
         
+        /**
+         * Remove a PBObject from the set.
+         */
         public function remove(object:PBObject):void 
         {
             var idx:int = items.indexOf(object);
@@ -33,16 +39,25 @@ package com.pblabs.core
             object.noteSetRemove(this);
         }
         
+        /**
+         * Does this PBSet contain the specified object? 
+         */
         public function contains(object:PBObject):Boolean
         {
             return (items.indexOf(object) != -1);
         }
         
+        /**
+         * How many objects are in the set?
+         */
         public function get length():int
         {
             return items.length;
         }
         
+        /**
+         * Return the object at the specified index of the set.
+         */
         public function getPBObjectAt(index:int):PBObject
         {
             return items[index];

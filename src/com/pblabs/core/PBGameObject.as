@@ -28,10 +28,22 @@ package com.pblabs.core
             return _deferring;
         }
         
+        /**
+         * If true, then components that are added aren't registered until 
+         * deferring is set to false. This is used when you are adding a lot of
+         * components, or you are adding components with cyclical dependencies
+         * and need them to all be present on the PBGameObject before their
+         * onAdd methods are called.
+         */
         public function set deferring(value:Boolean):void
         {
             if(_deferring && value == false)
             {
+                // Loop as long as we keep finding deferred stuff, the 
+                // dictionary delete operations can mess up ordering so we have
+                // to check to avoid missing stuff. This is a little lame but
+                // our previous implementation involved allocating lots of 
+                // temporary helper objects, which this avoids, so there you go.
                 var foundDeferred:Boolean = true;
                 
                 while(foundDeferred)
@@ -69,6 +81,15 @@ package com.pblabs.core
             component.doAdd();
         }
         
+        /**
+         * Add a component to the PBGameObject. Subject to the deferring flag,
+         * the component will be initialized immediately.
+         * 
+         * If there is a public var on this PBGameObject (ie, you've subclassed
+         * PBGameObject) with the same name as the component has, it will be
+         * populated with a reference to the component. This way you can get
+         * typed access to components on your game objects.
+         */
         public function addComponent(component:PBComponent, name:String = null):void
         {
             if(name)
@@ -94,6 +115,9 @@ package com.pblabs.core
                 doInitialize(component);
         }
         
+        /**
+         * Remove a component from this game object.
+         */
         public function removeComponent(component:PBComponent):void
         {
             if(component.owner != this)
@@ -108,11 +132,18 @@ package com.pblabs.core
             component._owner = null;
         }
         
+        /**
+         * Look up a component by name.
+         */
         public function lookupComponent(name:String):*
         {
             return _components[name] as PBComponent;
         }
         
+        /**
+         * Get a fresh Vector with references to all the components in this
+         * game object.
+         */
         public function getAllComponents():Vector.<PBComponent>
         {
             var out:Vector.<PBComponent> = new Vector.<PBComponent>();
@@ -121,6 +152,19 @@ package com.pblabs.core
             return out;
         }
         
+        /**
+         * Initialize the game object! This is done in a couple of stages.
+         * 
+         * First, the PBObject initialization is performed.
+         * Second, we look for any components in public vars on the PBGameObject.
+         * This allows you to get at them by direct typed references instead of
+         * doing lookups. If we find any, we add them to the game object.
+         * Third, we turn off the deferring flag, so any components you've added
+         * via addComponent get initialized.
+         * Fourth, dependency injection is performed on ourselves and our components. 
+         * Finally, we call applyBindings to make sure we have the latest data
+         * for any registered data bindings.
+         */
         public override function initialize():void
         {
             super.initialize();
@@ -161,6 +205,10 @@ package com.pblabs.core
             }
         }
         
+        /**
+         * Removes any components on this game object, then does normal PBObject
+         * destruction (ie, remove from any groups or sets).
+         */
         public override function destroy():void
         {
             for(var key:String in _components)
@@ -169,11 +217,21 @@ package com.pblabs.core
             super.destroy();
         }
         
+        /**
+         * Get a value from this game object in a data driven way. 
+         * @param property Property string to look up, ie "@componentName.fieldName"
+         * @param defaultValue A default value to return if the desired property is absent.
+         */
         public function getProperty(property:String, defaultValue:* = null):*
         {
             return owningGroup.getManager(PropertyManager).getProperty(this, property, defaultValue);
         }
         
+        /**
+         * Set a value on this game object in a data driven way. 
+         * @param property Property string to look up, ie "@componentName.fieldName"
+         * @param value Value to set if the property is found.
+         */
         public function setProperty(property:String, value:*):void
         {
             owningGroup.getManager(PropertyManager).setProperty(this, property, value);            

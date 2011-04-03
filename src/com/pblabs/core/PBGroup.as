@@ -13,6 +13,9 @@ package com.pblabs.core
      * PBGroup provides lifecycle functionality (PBObjects in it are destroy()ed
      * when it is destroy()ed), as well as dependency injection (see
      * registerManager).
+     * 
+     * PBGroups are unique because they don't require an owningGroup to 
+     * be initialize()ed.
      */
     public class PBGroup extends PBObject
     {
@@ -33,16 +36,25 @@ package com.pblabs.core
             return null;
         }
         
+        /**
+         * Does this PBGroup directly contain the specified object?
+         */
         public final function contains(object:PBObject):Boolean
         {
             return (object.owningGroup == this);
         }
         
+        /**
+         * How many PBObjects are in this group?
+         */
         public final function get length():int
         {
             return _items.length;
         }
         
+        /**
+         * Return the PBObject at the specified index.
+         */
         public final function getPBObjectAt(index:int):PBObject
         {
             return _items[index];
@@ -114,6 +126,14 @@ package com.pblabs.core
                 _injector.setParentInjector(owningGroup.injector);
         }
         
+        /**
+         * Add a manager, which is used to fulfill dependencies for the specified
+         * clazz. If the "manager" implements the IPBManager interface, then
+         * initialize() is called at this time. When the PBGroup's destroy()
+         * method is called, then destroy() is called on the manager if it
+         * implements IPBManager. Injection is also done on the manager when it
+         * is registered.
+         */
         public function registerManager(clazz:Class, instance:*):void
         {
             initInjection();
@@ -124,6 +144,9 @@ package com.pblabs.core
                 (instance as IPBManager).initialize();
         }
         
+        /**
+         * Get a previously registered manager.
+         */
         public function getManager(clazz:Class):*
         {
             var res:* = null;
@@ -136,6 +159,10 @@ package com.pblabs.core
             return res;
         }
         
+        /**
+         * Perform dependency injection on the specified object using this 
+         * PBGroup's injection mappings. 
+         */
         public function injectInto(object:*):void
         {
             injector.apply(object);
