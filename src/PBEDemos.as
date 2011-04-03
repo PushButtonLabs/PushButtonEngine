@@ -19,7 +19,7 @@ package
     import demos.circlePickup.CirclePickupScene;
     import demos.circlePickupWithTimeManager.CirclePickupWithTimeManagerScene;
     import demos.molehill.MolehillScene;
-    import demos.mouseFollower.MouseFollowScene;
+    import demos.mouseFollower.MouseFollowerScene;
     import demos.simplestRenderer.SimplestRendererScene;
     
     import flash.display.Sprite;
@@ -40,6 +40,10 @@ package
      * various parts of the engine's capabilities. Use < and > to change the 
      * demo. Press ~ (tilde) to bring up the console. Type help to learn about
      * more commands.
+     * 
+     * The demo scenes are all implemented in their own classes that live in 
+     * the demo package. A great way to learn the engine is to read through
+     * each demo, in order, and look at the demo app at the same time. 
      */
     [SWF(frameRate="32",wmode="direct")]
     public class PBEDemos extends Sprite
@@ -52,7 +56,7 @@ package
 
         // List of the demo scenes we will cycle amongst.
         public var sceneList:Array = 
-            [ SimplestRendererScene, BindingDemoScene, MouseFollowScene, 
+            [ SimplestRendererScene, BindingDemoScene, MouseFollowerScene, 
                 CirclePickupScene, CirclePickupWithTimeManagerScene, MolehillScene ];
         
         // Keep track of the current demo scene.
@@ -62,6 +66,9 @@ package
         // UI Elements.
         public var sceneCaption:TextField = new TextField();
         
+        /**
+         * Initialize the demo and show the first scene.
+         */
         public function PBEDemos()
         {
             // Set it so that the stage resizes properly.
@@ -69,7 +76,8 @@ package
             stage.scaleMode = StageScaleMode.NO_SCALE;
             
             // Set up the root group for the demo and register a few useful
-            // managers.            
+            // managers. Managers are available via dependency injection to the
+            // demo scenes and objects.
             rootGroup.initialize();
             rootGroup.name = "PBEDemoGroup";
             rootGroup.registerManager(Stage, stage);
@@ -93,6 +101,11 @@ package
             updateScene();
         }
         
+        /**
+         * Called when the scene index is changed, to make sure the index is
+         * valid, then to destroy the old demo scene, create the new demo scene,
+         * and to update the UI.
+         */
         protected function updateScene():void
         {
             // Make sure the current index is valid.
@@ -123,7 +136,7 @@ package
          */
         protected function onKeyUp(ke:KeyboardEvent):void
         {
-            // Handle keys.
+            // Handle keys. We do this directly for simplicity.
             var keyAsString:String = String.fromCharCode(ke.charCode);
             var sceneChanged:Boolean = false;
             if(keyAsString == "<")

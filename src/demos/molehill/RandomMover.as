@@ -4,9 +4,13 @@ package demos.molehill
     
     import flash.geom.Point;
     
+    /**
+     * Simple component that returns a new random position every time you ask.
+     */
     public class RandomMover extends PBComponent
     {
         protected var _position:Point = new Point();
+        
         public function get position():Point
         {
             _position.x = Math.random() * 1024;

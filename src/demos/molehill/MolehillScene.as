@@ -9,7 +9,11 @@ package demos.molehill
     import flash.display.Stage;
     import flash.geom.Point;
     
-    // If you are getting a bad FPS (<20), make sure wmode = direct
+    /**
+     * Demo showing how to do a little Molehill rendering.
+     * 
+     * If you are getting a bad FPS (<20), make sure wmode = direct
+     */
     public class MolehillScene extends PBGroup implements ITicked
     {
         [Inject]
@@ -50,7 +54,7 @@ package demos.molehill
         
         public function onTick():void
         {
-            
+            // Add some neat behavior here!
         }
     }
 }

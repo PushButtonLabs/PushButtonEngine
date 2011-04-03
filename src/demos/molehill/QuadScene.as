@@ -23,6 +23,9 @@ package demos.molehill
     import flash.geom.Rectangle;
     import flash.utils.Dictionary;
     
+    /**
+     * Very simple Molehill quad renderer.
+     */
     public class QuadScene implements IAnimated, IPBManager
     {
         [Inject]

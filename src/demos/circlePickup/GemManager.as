@@ -5,7 +5,7 @@ package demos.circlePickup
     import flash.geom.Point;
     import demos.SimplestPartyGameObject;
 
-    public class CircleManager
+    public class GemManager
     {
         public var circleSet:PBSet;
         public var pickerUpper:SimplestPartyGameObject;

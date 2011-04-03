@@ -4,6 +4,9 @@ package demos.molehill
     
     import flash.geom.Point;
     
+    /**
+     * Component that works with QuadScene to render a bunch of hardware quads.
+     */
     public class QuadRenderer extends AnimatedComponent
     {
         [Inject]
