@@ -16,6 +16,8 @@ Next Steps
 
 Open PBEDemos.as and start reading. The repo includes several demo applications with full comments.
 
+PBE needs the following compiler arguments: --keep-as3-metadata+=TypeHint,EditorData,Embed,Inject,PostInject
+
 * Documentation is at [http://pushbuttonengine.com/docs/](http://pushbuttonengine.com/docs/)
 * Forums are at [http://pushbuttonengine.com/forum/](http://pushbuttonengine.com/forum/)
 * Follow [@PushButtonLabs](http://twitter.com/pushbuttonlabs) and/or [@BenGarney](http://twitter.com/bengarney)
