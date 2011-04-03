@@ -4,7 +4,7 @@ package demos.simplestRenderer
     import com.pblabs.simplest.SimplestSpriteRenderer;
     
     import flash.geom.Point;
-    import demos.SimplestPartyGameObject;
+    import demos.SimplestDemoGameObject;
     
     /**
      * Very simplest possible demo - a single game object that draws a circle
@@ -24,7 +24,7 @@ package demos.simplestRenderer
             // Create a demo object. All game objects derive from PBGameObject
             // and exist to hold subclasses of PBComponent. In PBE, nearly all
             // game logic and behavior lives inside of components.
-            var go:SimplestPartyGameObject = new SimplestPartyGameObject();
+            var go:SimplestDemoGameObject = new SimplestDemoGameObject();
             
             // Every game object is owned by a group. When the group is destroyed,
             // so are the objects in it. In this way you can clean up when (for

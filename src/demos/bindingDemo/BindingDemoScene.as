@@ -4,7 +4,7 @@ package demos.bindingDemo
     import com.pblabs.simplest.SimplestMouseFollowComponent;
     import com.pblabs.simplest.SimplestSpatialComponent;
     import com.pblabs.simplest.SimplestSpriteRenderer;
-    import demos.SimplestPartyGameObject;
+    import demos.SimplestDemoGameObject;
     
     /**
      * Very simple demo showing how to use the component data binding system. 
@@ -18,7 +18,7 @@ package demos.bindingDemo
             super.initialize();
             
             // Create a party object.
-            var go:SimplestPartyGameObject = new SimplestPartyGameObject();
+            var go:SimplestDemoGameObject = new SimplestDemoGameObject();
             go.owningGroup = this;
             
             // Set up the spatial.

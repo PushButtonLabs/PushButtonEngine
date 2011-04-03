@@ -4,7 +4,7 @@ package demos.mouseFollower
     import com.pblabs.simplest.SimplestMouseFollowComponent;
     import com.pblabs.simplest.SimplestSpatialComponent;
     import com.pblabs.simplest.SimplestSpriteRenderer;
-    import demos.SimplestPartyGameObject;
+    import demos.SimplestDemoGameObject;
     
     /**
      * Simple scene which shows how to make a game object that follows the mouse. 
@@ -26,7 +26,7 @@ package demos.mouseFollower
         protected function createPartyObject():void
         {
             // Create a party object.
-            var go:SimplestPartyGameObject = new SimplestPartyGameObject();
+            var go:SimplestDemoGameObject = new SimplestDemoGameObject();
             go.owningGroup = this;
             
             // Set up the spatial.

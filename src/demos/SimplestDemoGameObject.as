@@ -4,7 +4,7 @@ package demos
     import com.pblabs.simplest.SimplestSpriteRenderer;
     import com.pblabs.simplest.SimplestSpatialComponent;
     
-    public class SimplestPartyGameObject extends PBGameObject
+    public class SimplestDemoGameObject extends PBGameObject
     {
         public var spatial:SimplestSpatialComponent;
         public var render:SimplestSpriteRenderer;

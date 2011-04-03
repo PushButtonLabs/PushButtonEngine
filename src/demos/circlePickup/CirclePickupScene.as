@@ -10,7 +10,7 @@ package demos.circlePickup
     import flash.display.Stage;
     import flash.events.Event;
     import flash.geom.Point;
-    import demos.SimplestPartyGameObject;
+    import demos.SimplestDemoGameObject;
     
     /**
      * Demo which shows some very simple gameplay - move the mouse to pick
@@ -29,7 +29,9 @@ package demos.circlePickup
         
         /**
          * This manager keeps track of the active circles, and is responsible
-         * for destroy()ing them then we pick them up (by getting close). 
+         * for destroy()ing them then we pick them up (by getting close). See
+         * the comments in the GemManager for more information on managers in
+         * PBE. 
          */
         public var gemManager:GemManager = new GemManager();
         
@@ -51,7 +53,7 @@ package demos.circlePickup
             
             // Tell the gem manager what set of objects to consider for 
             // picking up.
-            gemManager.circleSet = gemSet;
+            gemManager.gemSet = gemSet;
 
             // Make the guy that follows the mouse pick stuff up.
             gemManager.pickerUpper = makeMouseFollower();
@@ -92,9 +94,9 @@ package demos.circlePickup
          * followers, game objects that follow the mouse around. We explain this
          * in detail in the MouseFollowerScene, it is a copy of the code there.
          */
-        public function makeMouseFollower():SimplestPartyGameObject
+        public function makeMouseFollower():SimplestDemoGameObject
         {
-            var go:SimplestPartyGameObject = new SimplestPartyGameObject();
+            var go:SimplestDemoGameObject = new SimplestDemoGameObject();
             go.owningGroup = this;
             
             go.spatial = new SimplestSpatialComponent();
@@ -117,10 +119,10 @@ package demos.circlePickup
          * is that we set the position based on the pos parameter, and
          * we also add them to the gems PBSet.
          */
-        public function makeGem(pos:Point):SimplestPartyGameObject
+        public function makeGem(pos:Point):SimplestDemoGameObject
         {
             // Create the mouse follower.
-            var go:SimplestPartyGameObject = new SimplestPartyGameObject();
+            var go:SimplestDemoGameObject = new SimplestDemoGameObject();
             go.owningGroup = this;
             
             go.spatial = new SimplestSpatialComponent();

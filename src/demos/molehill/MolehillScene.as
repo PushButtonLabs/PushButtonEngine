@@ -10,7 +10,8 @@ package demos.molehill
     import flash.geom.Point;
     
     /**
-     * Demo showing how to do a little Molehill rendering.
+     * Demo showing how to do a little Molehill rendering. This is an 
+     * advanced demo is light on the docs.
      * 
      * If you are getting a bad FPS (<20), make sure wmode = direct
      */
