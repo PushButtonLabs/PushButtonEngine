@@ -12,6 +12,10 @@ package demos.demo_08_carDemo
     import flash.text.TextFieldAutoSize;
     import flash.text.TextFormat;
     
+    /**
+     * Excruciating simple demo showing how we can implement a numerical 
+     * simulation of a car.
+     */
     public class CarDemoScene extends PBGroup implements ITicked
     {
         [Inject]
@@ -23,11 +27,29 @@ package demos.demo_08_carDemo
         [Inject]
         public var keyboardManager:KeyboardManager;
         
+        /**
+         * How much gas is left? 
+         */
         public var gas:int = 1000;
+        
+        /**
+         * How fast are we moving on the X axis? 
+         */
         public var velocity:Number = 0;
+        
+        /**
+         * Where are we on the X axis? 
+         */
         public var position:Number = 0;
         
+        /**
+         * Sprite used to display the car state. 
+         */
         public var circleSprite:Sprite = new Sprite();
+        
+        /**
+         * Used to show how much gas is left. 
+         */
         public var gasIndicator:TextField = new TextField();
         
         public override function initialize():void
@@ -48,6 +70,11 @@ package demos.demo_08_carDemo
             timeManager.addTickedObject(this);
         }
         
+        /**
+         * Every tick, if the A key is down, consume gas and add velocity. In
+         * addition, apply drag and update our position based on velocity. Then
+         * redraw the visuals.
+         */
         public function onTick():void
         {
             if(keyboardManager.isKeyDown(KeyboardKey.A.keyCode))

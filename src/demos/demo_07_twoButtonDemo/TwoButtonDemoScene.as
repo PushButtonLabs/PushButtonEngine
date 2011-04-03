@@ -10,6 +10,10 @@ package demos.demo_07_twoButtonDemo
     import flash.display.Sprite;
     import flash.display.Stage;
     
+    /**
+     * Excruciatingly simple demo that shows how we can drive complex game 
+     * state from a few inputs using a truth table. 
+     */
     public class TwoButtonDemoScene extends PBGroup implements ITicked
     {
         [Inject]
@@ -21,6 +25,11 @@ package demos.demo_07_twoButtonDemo
         [Inject]
         public var keyboardManager:KeyboardManager;
         
+        /**
+         * Array holding descriptions of output state based on input. The array
+         * is indexed by adding 1 if the first input is true, and 2 if the second
+         * (ie, converting input into a number starting with LSB). 
+         */
         public var truthTable:Array = 
             [
                 [ false, false, false, false, false  ],
@@ -29,8 +38,14 @@ package demos.demo_07_twoButtonDemo
                 [ true, true, true, true, false]
             ];
         
+        /**
+         * Our current state. Copied out of truthTable based on current inputs.
+         */
         public var state:Array = [ false, false, false, false, false ];
         
+        /**
+         * Sprite used to display current state. 
+         */
         public var circleSprite:Sprite = new Sprite();
         
         public override function initialize():void
@@ -44,6 +59,10 @@ package demos.demo_07_twoButtonDemo
             timeManager.addTickedObject(this);
         }
         
+        /**
+         * Treating A and S as inputs, look up the right position in the truth
+         * table and set our state. Then redraw our visuals.
+         */
         public function onTick():void
         {
             var brake:Boolean = keyboardManager.isKeyDown(KeyboardKey.S.keyCode);
@@ -54,6 +73,10 @@ package demos.demo_07_twoButtonDemo
             redrawCircle();
         }
         
+        /**
+         * Draw a circle for each state in the state vector. Green if true, red
+         * if false.
+         */
         public function redrawCircle():void
         {
             circleSprite.graphics.clear();

@@ -10,6 +10,11 @@ package demos.demo_06_oneButtonDemo
     import flash.display.Sprite;
     import flash.display.Stage;
     
+    /**
+     * Excruciating simple, self-contained demo showing how you can drive game
+     * state off of a button. Does not use any components at all, demonstrating
+     * a convenient way to build simple gameplay prototypes. 
+     */
     public class OneButtonDemoScene extends PBGroup implements ITicked
     {
         [Inject]
@@ -21,10 +26,19 @@ package demos.demo_06_oneButtonDemo
         [Inject]
         public var keyboardManager:KeyboardManager;
         
+        /**
+         * Variable that holds our current state. 
+         */
         public var state:Boolean;
         
+        /**
+         * Sprite used to display that state. 
+         */
         public var circleSprite:Sprite = new Sprite();
         
+        /**
+         * Initialize the demo.
+         */
         public override function initialize():void
         {
             super.initialize();
@@ -36,6 +50,9 @@ package demos.demo_06_oneButtonDemo
             timeManager.addTickedObject(this);
         }
         
+        /**
+         * On every tick, we sample the state and update our visuals.
+         */
         public function onTick():void
         {
             state = keyboardManager.isKeyDown(KeyboardKey.A.keyCode);
@@ -43,6 +60,9 @@ package demos.demo_06_oneButtonDemo
             redrawCircle();
         }
         
+        /**
+         * Simple method to display a circle in the center of the stage. 
+         */
         public function redrawCircle():void
         {
             circleSprite.graphics.clear();
@@ -54,6 +74,9 @@ package demos.demo_06_oneButtonDemo
             circleSprite.graphics.endFill();
         }
         
+        /**
+         * Clean everything up.
+         */
         public override function destroy():void
         {
             timeManager.removeTickedObject(this);
