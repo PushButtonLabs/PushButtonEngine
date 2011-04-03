@@ -8,6 +8,8 @@
  ******************************************************************************/
 package com.pblabs.util
 {    
+    import com.pblabs.debug.Logger;
+    
     import flash.utils.Dictionary;
     import flash.utils.Proxy;
     import flash.utils.describeType;
@@ -29,8 +31,8 @@ package com.pblabs.util
          */
         public static function registerInstantiator(typeName:String, instantiator:Function):void
         {
-            //if (_instantiators[typeName])
-            //    Logger.warn("TypeUtility", "RegisterInstantiator", "An instantiator for " + typeName + " has already been registered. It will be replaced.");
+            if (_instantiators[typeName])
+                Logger.warn("TypeUtility", "registerInstantiator", "An instantiator for " + typeName + " has already been registered. It will be replaced.");
             
             _instantiators[typeName] = instantiator;
         }
@@ -115,8 +117,8 @@ package com.pblabs.util
             {
                 if(!suppressError)
                 {
-                    //Logger.warn(null, "Instantiate", "Failed to instantiate " + className + " due to " + e.toString());
-                    //Logger.warn(null, "Instantiate", "Is " + className + " included in your SWF? Make sure you call context.registerType(" + className + "); somewhere in your project.");				 
+                    Logger.warn(null, "Instantiate", "Failed to instantiate " + className + " due to " + e.toString());
+                    Logger.warn(null, "Instantiate", "Is " + className + " included in your SWF? Make sure you call context.registerType(" + className + "); somewhere in your project.");				 
                 }
             }
             
@@ -165,7 +167,7 @@ package com.pblabs.util
         {
             if (object is Class)
             {
-                //Logger.error(object, "isDynamic", "The object is a Class type, which is always dynamic");
+                Logger.error(object, "isDynamic", "The object is a Class type, which is always dynamic");
                 return true;
             }
             

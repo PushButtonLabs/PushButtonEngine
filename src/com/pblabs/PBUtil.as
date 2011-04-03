@@ -20,7 +20,7 @@ package com.pblabs
 	import flash.utils.getQualifiedClassName;
 	
 	/**
-	 * Contains math related utility methods.
+	 * Contains an assortment of useful utility methods.
 	 */
 	public class PBUtil
 	{

@@ -7,6 +7,14 @@ package com.pblabs.core
     /**
      * Base class for things that have names, lifecycles, and exist in a PBSet or
      * PBGroup.
+     * 
+     * To use a PBObject:
+     * 
+     * 1. Instantiate one. (var foo = new PBGroup();)
+     * 2. Set the owning group. (foo.owningGroup = rootGroup;)
+     * 3. Call initialize(). (foo.initialize();) 
+     * 4. Use the object!
+     * 5. When you're done, call destroy(). (foo.destroy();)
      */
     public class PBObject
     {
@@ -40,16 +48,26 @@ package com.pblabs.core
             _name = value;
         }
 
+        /**
+         * What PBSets reference this PBObject?
+         */
         public function get sets():Vector.<PBSet>
         {
             return _sets;
         }
         
+        /**
+         * @private
+         */
         public function get owningGroup():PBGroup
         {
             return _owningGroup;
         }
         
+        /**
+         * The PBGroup that contains us. All PBObjects must be in a PBGroup,
+         * and the owningGroup has to be set before calling initialize().
+         */
         public function set owningGroup(value:PBGroup):void
         {
             if(!value)
