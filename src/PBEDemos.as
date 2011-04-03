@@ -1,5 +1,7 @@
 package
 {
+    import com.greensock.OverwriteManager;
+    import com.greensock.TweenMax;
     import com.pblabs.core.PBGameObject;
     import com.pblabs.core.PBGroup;
     import com.pblabs.debug.Console;
@@ -11,6 +13,7 @@ package
     import com.pblabs.simplest.SimplestSpatialComponent;
     import com.pblabs.simplest.SimplestSpriteRenderer;
     import com.pblabs.time.TimeManager;
+    import com.pblabs.util.TypeUtility;
     
     import demos.bindingDemo.BindingDemoScene;
     import demos.circlePickup.CirclePickupScene;
@@ -25,6 +28,9 @@ package
     import flash.display.StageScaleMode;
     import flash.events.KeyboardEvent;
     import flash.geom.Point;
+    import flash.text.TextField;
+    import flash.text.TextFieldAutoSize;
+    import flash.text.TextFormat;
     
     /**
      * Sweet PushButton Engine demo application.
@@ -38,6 +44,9 @@ package
     [SWF(frameRate="32",wmode="direct")]
     public class PBEDemos extends Sprite
     {
+        // Set up TweenMax plugins.
+        OverwriteManager.init(OverwriteManager.AUTO);
+        
         // Container for the active scene.
         public var rootGroup:PBGroup = new PBGroup();
 
@@ -49,6 +58,9 @@ package
         // Keep track of the current demo scene.
         public var currentSceneIndex:int = 0;
         public var currentScene:PBGroup;
+        
+        // UI Elements.
+        public var sceneCaption:TextField = new TextField();
         
         public function PBEDemos()
         {
@@ -69,6 +81,13 @@ package
             
             // Listen for keyboard events.
             stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+
+            // Set up the scene caption.
+            sceneCaption.autoSize = TextFieldAutoSize.LEFT;
+            sceneCaption.text = "Loading..";
+            sceneCaption.textColor = 0x0;
+            sceneCaption.defaultTextFormat = new TextFormat(null, 48, 0x0, true);
+            addChild(sceneCaption);
             
             // Make sure first scene is loaded.
             updateScene();
@@ -91,6 +110,12 @@ package
             currentScene = new sceneList[currentSceneIndex];
             currentScene.owningGroup = rootGroup;
             currentScene.initialize();
+            
+            // Trigger UI.
+            sceneCaption.text = TypeUtility.getObjectClassName(currentScene).split("::")[1];
+            TweenMax.killTweensOf(sceneCaption);
+            sceneCaption.alpha = 1;
+            TweenMax.to(sceneCaption, 1.0, {alpha:0, delay: 2.0 }); 
         }
         
         /**
