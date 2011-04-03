@@ -15,12 +15,12 @@ package
     import com.pblabs.time.TimeManager;
     import com.pblabs.util.TypeUtility;
     
-    import demos.bindingDemo.BindingDemoScene;
-    import demos.circlePickup.CirclePickupScene;
-    import demos.circlePickupWithTimeManager.CirclePickupWithTimeManagerScene;
+    import demos.demo_02_bindingDemo.BindingDemoScene;
+    import demos.demo_04_circlePickup.CirclePickupScene;
+    import demos.demo_05_circlePickupWithTimeManager.CirclePickupWithTimeManagerScene;
     import demos.molehill.MolehillScene;
-    import demos.mouseFollower.MouseFollowerScene;
-    import demos.simplestRenderer.SimplestRendererScene;
+    import demos.demo_03_mouseFollower.MouseFollowerScene;
+    import demos.demo_01_simplestRenderer.SimplestRendererScene;
     
     import flash.display.Sprite;
     import flash.display.Stage;

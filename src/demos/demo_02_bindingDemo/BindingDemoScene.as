@@ -1,4 +1,4 @@
-package demos.bindingDemo
+package demos.demo_02_bindingDemo
 {
     import com.pblabs.core.PBGroup;
     import com.pblabs.simplest.SimplestMouseFollowComponent;

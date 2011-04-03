@@ -1,4 +1,4 @@
-package demos.mouseFollower
+package demos.demo_03_mouseFollower
 {
     import com.pblabs.core.PBGroup;
     import com.pblabs.simplest.SimplestMouseFollowComponent;

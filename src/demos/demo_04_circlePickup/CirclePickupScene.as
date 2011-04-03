@@ -1,4 +1,4 @@
-package demos.circlePickup
+package demos.demo_04_circlePickup
 {
     import com.pblabs.core.PBGameObject;
     import com.pblabs.core.PBGroup;

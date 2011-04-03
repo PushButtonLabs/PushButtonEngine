@@ -1,4 +1,4 @@
-package demos.simplestRenderer
+package demos.demo_01_simplestRenderer
 {
     import com.pblabs.core.PBGroup;
     import com.pblabs.simplest.SimplestSpriteRenderer;

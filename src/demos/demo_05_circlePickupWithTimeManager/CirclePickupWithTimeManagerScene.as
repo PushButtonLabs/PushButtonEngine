@@ -1,4 +1,4 @@
-package demos.circlePickupWithTimeManager
+package demos.demo_05_circlePickupWithTimeManager
 {
     import com.pblabs.core.PBGameObject;
     import com.pblabs.core.PBGroup;
