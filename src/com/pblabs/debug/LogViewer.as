@@ -6,14 +6,12 @@
  * This file is licensed under the terms of the MIT license, which is included
  * in the License.html file at the root directory of this SDK.
  ******************************************************************************/
-package com.pblabs.engine.debug
+package com.pblabs.debug
 {
-    import com.pblabs.engine.PBE;
-    import com.pblabs.engine.PBUtil;
-    import com.pblabs.engine.input.InputKey;
-    import com.pblabs.engine.time.IAnimatedObject;
+    import com.pblabs.PBE;
+    import com.pblabs.PBUtil;
+    import com.pblabs.debug.ILogAppender;
     
-    import flash.desktop.Clipboard;
     import flash.display.Bitmap;
     import flash.display.BitmapData;
     import flash.display.Sprite;
@@ -25,14 +23,11 @@ package com.pblabs.engine.debug
     import flash.text.TextFieldType;
     import flash.text.TextFormat;
     import flash.ui.Keyboard;
-    import flash.utils.setTimeout;
-    
-    import liddles.debug.IDebugUI;
     
     /**
      * Console UI, which shows console log activity in-game, and also accepts input from the user.
      */
-    public class LogViewer extends Sprite implements ILogAppender, IDebugUI
+    public class LogViewer extends Sprite implements ILogAppender
     {
         protected var _messageQueue:Array = [];
         

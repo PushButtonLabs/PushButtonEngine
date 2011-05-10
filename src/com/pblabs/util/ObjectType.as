@@ -6,9 +6,8 @@
  * This file is licensed under the terms of the MIT license, which is included
  * in the License.html file at the root directory of this SDK.
  ******************************************************************************/
-package com.pblabs.engine.core
+package com.pblabs.util
 {
-    
     import com.pblabs.debug.Logger;
     
     import flash.utils.Dictionary;

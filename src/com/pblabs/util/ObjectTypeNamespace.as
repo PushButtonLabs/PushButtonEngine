@@ -1,6 +1,6 @@
-package com.pblabs.engine.core
+package com.pblabs.util
 {
-    import com.pblabs.engine.Logger;
+    import com.pblabs.debug.Logger;
     
     import flash.utils.Dictionary;
     
