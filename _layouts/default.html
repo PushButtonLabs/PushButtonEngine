@@ -1,0 +1,28 @@
+<html>
+<head>
+	<link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print">
+	<!--[if lt IE 8]>
+	  <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
+	<![endif]-->
+	<title>{{ page.title }}</title>
+</head>
+<body>
+	<div class="container">
+		<div class="span-24">
+			<h1> {{ page.title }} </h1>
+		</div>
+		
+		<div class="span-24">
+			{{ page.header }}<br>
+			{{ content }}
+		</div>
+		
+		<div class="span-24">
+			<center>
+			<i>(c) 2011 PushButton Labs LLC Generated {{site.time}}</i>
+			</center>
+		</div>
+	</div>
+</body>
+</html>
