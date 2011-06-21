@@ -20,3 +20,5 @@ package com.pblabs.simplest
         public var position:Point = new Point();
     }
 }
+// @docco-chapter 1. First Steps
+// @docco-order 5

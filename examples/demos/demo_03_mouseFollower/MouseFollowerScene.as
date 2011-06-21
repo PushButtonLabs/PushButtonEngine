@@ -1,3 +1,10 @@
+/**
+ * Static demos are boring! Let's add some interaction. This demo will make
+ * our renderer follow the mouse.
+ *
+ * Notice how this demo builds very directly on the previous demo. We really 
+ * only make one change - we add a third component that tracks the mouse.
+ */
 package demos.demo_03_mouseFollower
 {
     import com.pblabs.core.PBGroup;
@@ -6,11 +13,13 @@ package demos.demo_03_mouseFollower
     import com.pblabs.simplest.SimplestSpriteRenderer;
     import demos.SimplestDemoGameObject;
     
-    /**
-     * Simple scene which shows how to make a game object that follows the mouse. 
-     */
     public class MouseFollowerScene extends PBGroup
     {
+        // ## Implementation
+        // Notice that for simplicy we make a helper function to set up our
+        // "mouse follower" game object. This will help later on when we
+        // want to make a single object more than once, or we have multiple
+        // complex kinds of objects to create.
         public override function initialize():void
         {
             super.initialize();
@@ -21,11 +30,12 @@ package demos.demo_03_mouseFollower
         }
         
         /**
+         * ## Create A Mouse Follower Object
          * Helper function to create an object for our demo.
          */
         protected function createPartyObject():void
         {
-            // Create a party object.
+            // Allocate our PBGameObject subclass.
             var go:SimplestDemoGameObject = new SimplestDemoGameObject();
             go.owningGroup = this;
             
@@ -39,14 +49,14 @@ package demos.demo_03_mouseFollower
             
             // Now, let's add the new part - a component which is designed to set
             // a specified property every frame. The SimplestMouseFollowComponent
-            // reads the mouse's position and sets the specified property each
-            // frame.
+            // reads the mouse's position and sets the specified property on 
+            // the spatial component.
             const mfc:SimplestMouseFollowComponent = new SimplestMouseFollowComponent();
             mfc.targetProperty = "@spatial.position";
             
             // Since we don't have a field on the SimplestPartyGameObject for
             // this component, we can add it in the generic way, ie, by using
-            // addComponent.
+            // addComponent and specifying a name.
             go.addComponent(mfc, "mouse");
             
             // Let the object live and be free!
@@ -54,3 +64,5 @@ package demos.demo_03_mouseFollower
         }
     }
 }
+// @docco-chapter 1. First Steps
+// @docco-order 6
