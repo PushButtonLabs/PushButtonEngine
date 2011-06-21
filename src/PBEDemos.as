@@ -1,3 +1,44 @@
+/**
+ * ## Introduction
+ * 
+ * PushButton Engine is an industrial strength Flash game framework.
+ *
+ * <b>Useful Links:</b>
+ * <ul>
+ *     <li><a href="http://github.com/PushButtonLabs/PushButtonEngine">GitHub
+ *         Project</a></li>
+ *     <li><a href="http://www.pushbuttonengine.com/forum">Official
+ *         Forums</a></li>
+ * </ul>
+ * 
+ * You can click the Jump To.. button in the top right of the page to navigate
+ * to different parts of the documentation.
+ *
+ * PBE uses [Docco](http://jashkenas.github.com/docco/) to document itself. As
+ * you read these docs, you are reading through the PBEDemos demo framework
+ * that ship with PBE. (See all that code on the right hand side?) Each demo
+ * covers a specific feature of the engine, and by reading through the docs,
+ * you'll learn all about PBE!
+ *
+ * ## Compiling PBEDemos
+ *
+ * Create a new ActionScript FlashBuilder project named PBEDemos pointing at
+ * your copy of PBE (specifically, the parent of the src/ folder). Set the 
+ * compiler options from the next section. Great! You're good to go. Compile,
+ * run, and follow along.
+ *
+ * ## Using PBE In Your Project
+ *
+ * To use PBE, create a folder called com/pblabs in your source directory and 
+ * copy everything from PBE's src/com/pblabs folder into it.
+ *
+ * Don't forget to add the following to your compiler options:
+ *
+ *     --keep-as3-metadata+=TypeHint,EditorData,Embed,Inject,PostInject
+ *
+ * And that's it!
+ *
+ */
 package
 {
     import com.greensock.OverwriteManager;
@@ -38,51 +79,74 @@ package
     import flash.text.TextFormat;
     
     /**
-     * Sweet PushButton Engine demo application.
-     * https://github.com/PushButtonLabs/PushButtonEngine
+     * ## PBEDemos?
      * 
-     * This demo application cycles amongst multiple demo "scenes" to show off
+     * PBEDemos is a sweet PushButton Engine demo framework. It switches 
+     * between different small PBE demo applications, using the < and > keys.
+     *
+     * If you are brand new to PBE, you might want to start with one of these
+     * very small demos, like
+     * <a href="SimplestRendererScene.html">SimplestRendererScene.as</a>, rather
+     * than digesting the demo framework.
+     * 
+     * PBEDemos cycles amongst multiple demo "scenes" to show off
      * various parts of the engine's capabilities. Use < and > to change the 
      * demo. Press ~ (tilde) to bring up the console. Type help to learn about
-     * more commands.
+     * the different debug commands.
      * 
      * The demo scenes are all implemented in their own classes that live in 
      * the demo package. A great way to learn the engine is to read through
-     * each demo, in order, and look at the demo app at the same time. 
+     * each demo, in order, and look at the demo app at the same time.
      */
+     
+     /**
+      * ## The Demo Framework
+      *
+      * Look at the code on the right and follow along!
+      *
+      * PBEDemos acts to load and unload instances of the classes that implement
+      * the various PBEDemos. It contains some book-keeping and UI code to 
+      * manage this, and it makes a few standard things available to the demos.
+      */
     [SWF(frameRate="32",wmode="direct")]
     public class PBEDemos extends Sprite
     {
-        // Set up TweenMax plugins.
-        OverwriteManager.init(OverwriteManager.AUTO);
-        
-        // Container for the active scene.
+        // rootGroup is a PBGroup that contains the current demo scene. It
+        // provides a few dependencies that every demo needs.
         public var rootGroup:PBGroup = new PBGroup();
 
-        // List of the demo scenes we will cycle amongst.
-        // The molehill demo requires a molehill enabled dev environment.
+        // We maintain a list of all the demo scenes that we'll cycle between,
+        // identified by their type. (The molehill demo requires a molehill
+        // enabled dev environment and is disabled by default.)
         public var sceneList:Array = 
             [ SimplestRendererScene, BindingDemoScene, MouseFollowerScene, 
                 CirclePickupScene, CirclePickupWithTimeManagerScene, 
                 OneButtonDemoScene, TwoButtonDemoScene, CarDemoScene,
-                FSMDemoScene
-            /*, MolehillScene*/ ];
+                FSMDemoScene /*, MolehillScene*/ ];
         
         // Keep track of the current demo scene.
         public var currentSceneIndex:int = 0;
         public var currentScene:PBGroup;
         
-        // UI Elements.
+        // We have a couple of UI elements to show whether the demo is
+        // paused, how to work the demo, and what demo is currently running.
         public var sceneCaption:TextField = new TextField();
         public var usageCaption:TextField = new TextField();
         public var pauseCaption:TextField = new TextField();
         
         /**
+         * ## PBEDemos Constructor
+         *
          * Initialize the demo and show the first scene.
          */
         public function PBEDemos()
         {
-            // Set it so that the stage resizes properly.
+            // Set up the TweenMax plugins we use. PBEDemos uses TweenMax for 
+            // some nice animation effects, but TweenMax is not a standard
+            // part of PBE. It is, however, a great tweening library.
+            OverwriteManager.init(OverwriteManager.AUTO);
+
+            // Set the stage to resize properly.
             stage.align = StageAlign.TOP_LEFT;
             stage.scaleMode = StageScaleMode.NO_SCALE;
             
@@ -106,7 +170,8 @@ package
             stage.addEventListener(Event.DEACTIVATE, onDeactivate);
             stage.addEventListener(Event.ACTIVATE, onActivate);
 
-            // Set up the scene caption.
+            // Set up the scene caption. This will display the type of the 
+            // demo we're currently viewing. (ie, SimplestRendererDemo)
             sceneCaption.autoSize = TextFieldAutoSize.LEFT;
             sceneCaption.text = "Loading..";
             sceneCaption.mouseEnabled = false;
@@ -114,7 +179,8 @@ package
             sceneCaption.defaultTextFormat = new TextFormat(null, 48, 0x0, true);
             addChild(sceneCaption);
             
-            // Set up the usage caption.
+            // Set up the usage caption. This shows the user what keys will
+            // control PBEDemos.
             usageCaption.autoSize = TextFieldAutoSize.CENTER;
             usageCaption.y = stage.stageHeight - 32;
             usageCaption.x = 0;
@@ -125,7 +191,8 @@ package
             usageCaption.textColor = 0x0;
             addChild(usageCaption);
             
-            // Set up the paused caption.
+            // Set up the paused caption. This is displayed when the demo loses
+            // focus.
             pauseCaption.autoSize = TextFieldAutoSize.CENTER;
             pauseCaption.y = stage.stageHeight/2 - 64;
             pauseCaption.x = 0;
@@ -136,11 +203,13 @@ package
             pauseCaption.textColor = 0x0;
             addChild(pauseCaption);
             
-            // Make sure first scene is loaded.
+            // Make sure first demo is loaded.
             updateScene();
         }
         
         /**
+         * ## Event.DEACTIVATE Handler
+         *
          * Called when we lose focus; we fade in the pause caption and set
          * the TimeManager timeScale to zero to pause our game. Note this only
          * affects things that use the TimeManager, not components that directly
@@ -153,6 +222,8 @@ package
         }
 
         /**
+         * ## Event.ACTIVATE Handler
+         *
          * Called when we gain focus; we fade out the pause caption and set
          * the TimeManager timeScale to one to resume our game. Note this only
          * affects things that use the TimeManager, not components that directly
@@ -165,6 +236,8 @@ package
         }
 
         /**
+         * ## Scene Switching Handler
+         *
          * Called when the scene index is changed, to make sure the index is
          * valid, then to destroy the old demo scene, create the new demo scene,
          * and to update the UI.
@@ -187,7 +260,7 @@ package
             currentScene.owningGroup = rootGroup;
             currentScene.initialize();
             
-            // Trigger UI.
+            // Trigger UI to show the new scene we've selected.
             sceneCaption.text = TypeUtility.getObjectClassName(currentScene).split("::")[1];
             TweenMax.killTweensOf(sceneCaption);
             sceneCaption.alpha = 1;
@@ -195,12 +268,18 @@ package
         }
         
         /**
-         * Global key handler to switch scenes.
+         * ## KeyboardEvent.KEY_UP Handler
+         *
+         * Global key handler to switch scenes. We listen with normal Flash
+         * so that we don't interfere with the activity of the various
+         * demos.
          */
         protected function onKeyUp(ke:KeyboardEvent):void
         {
-            // Handle keys. We do this directly for simplicity.
+            // Figure out what key was hit.
             var keyAsString:String = String.fromCharCode(ke.charCode);
+            
+            // It might be time to change scenes.
             var sceneChanged:Boolean = false;
             if(keyAsString == "<")
             {
@@ -213,6 +292,7 @@ package
                 sceneChanged = true;
             }
             
+            // If so, run updateScene();
             if(sceneChanged)
             {
                 updateScene();
@@ -220,3 +300,15 @@ package
         }
     }
 }
+
+/**
+ * ## Legal Notices
+ * 
+ * <i>The PushButton Engine is covered under the MIT license in its entirety,
+ * not including 3rd party components. Please read LICENSE for more 
+ * information on the MIT license.</i>
+ *
+ * <i>Copyright 2009-2011 PushButton Labs, LLC. All rights reserved.</i>
+ */
+// @docco-chapter 1. First Steps
+// @docco-order 1
