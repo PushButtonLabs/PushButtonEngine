@@ -5,6 +5,9 @@
  * DisplayObject, like a Sprite. SimplestRendererScene puts a Sprite with a
  * circle in it on the stage, and makes it easy to control the position.
  *
+ * You could think of SimplestSpriteRenderer as being a "view" in an MVC
+ * context.
+ *
  * This component demonstrates three important parts of PBE:
  * 
  *  1. **Component lifecycle.** Components have onAdd called when they 

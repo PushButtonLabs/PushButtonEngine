@@ -31,6 +31,11 @@ package demos.demo_01_simplestRenderer
          * ## Initialize()
          * 
          * initialize() is called when the demo scene is instantiated.
+         *
+         * Since PBGameObjects are destroyed automatically when they are in a
+         * PBGroup, and components will automatically initialize themselves,
+         * all we have to do is set things in motion and let them take care of
+         * themselves.
          */
         public override function initialize():void
         {
