@@ -1,3 +1,9 @@
+/**
+ * The Circle Pickup demo is our first taste of simple gameplay - move
+ * the mouse to pick up objects in the game world. It demonstrates adding your
+ * own manager to the game and how to use PBSet to keep track of active game
+ * objects. It also shows a more complex game object setup.
+ */
 package demos.demo_04_circlePickup
 {
     import com.pblabs.core.PBGameObject;
@@ -12,18 +18,14 @@ package demos.demo_04_circlePickup
     import flash.geom.Point;
     import demos.SimplestDemoGameObject;
     
-    /**
-     * Demo which shows some very simple gameplay - move the mouse to pick
-     * up objects in the game world. It demonstrates adding your own manager
-     * to the game and how to use PBSet to keep track of active game objects.
-     */
+    // ## Implementation
     public class CirclePickupScene extends PBGroup
     {
         /**
-         * Set for tracking active gems. Gems are the circles that we can pick
-         * up. Remember, a set only holds references to living objects. When
+         * PBSet for tracking active gems. Gems are the circles that we can pick
+         * up. Remember, a set holds references to only living objects. When
          * an object is destroy()ed, it is removed from any sets that reference
-         * it. So it's a great way to track what gems are still alive. 
+         * it. So it's a great way to track of which gems are still alive. 
          */
         public var gemSet:PBSet;
         
@@ -36,14 +38,19 @@ package demos.demo_04_circlePickup
         public var gemManager:GemManager = new GemManager();
         
         /**
-         * Get a reference to the stage via dependency injection.
+         * We'll need a reference to the Stage. Get it via dependency
+         * injection, as usual.
          */
         [Inject]
         public var stage:Stage;
         
+        // ## Setup
+        // You'll notice we have many more methods in this demo. It's our first
+        // demo to resemble a real game, so there is more complexity. Don't
+        // worry - all of the code here is very focused on making our game, and
+        // we'll walk through it one step at a time.
         public override function initialize():void
         {
-            // Always let the parent class initialize().
             super.initialize();
             
             // Set up the PBSet for the gems.
@@ -55,7 +62,7 @@ package demos.demo_04_circlePickup
             // picking up.
             gemManager.gemSet = gemSet;
 
-            // Make the guy that follows the mouse pick stuff up.
+            // Make the guy that follows the mouse and pick stuff up.
             gemManager.pickerUpper = makeMouseFollower();
             
             // Make the gems.
@@ -67,8 +74,7 @@ package demos.demo_04_circlePickup
         }
         
         /**
-         * This method is called when the scene is unloaded by PBEDemos (ie
-         * when the current demo is switched). 
+         * ## Teardown
          */
         public override function destroy():void
         {
@@ -82,7 +88,8 @@ package demos.demo_04_circlePickup
         }
         
         /**
-         * Let the gem pick up manager process every frame.
+         * ## ENTER_FRAME Handler
+         * Let the gem pick-up manager process every frame.
          */
         protected function onFrame(e:Event):void
         {
@@ -90,6 +97,7 @@ package demos.demo_04_circlePickup
         }
         
         /**
+         * ## Make MouseFollower
          * We have a method for each object type. This one is for making mouse
          * followers, game objects that follow the mouse around. We explain this
          * in detail in the MouseFollowerScene, it is a copy of the code there.
@@ -99,21 +107,30 @@ package demos.demo_04_circlePickup
             var go:SimplestDemoGameObject = new SimplestDemoGameObject();
             go.owningGroup = this;
             
+            // Create and add the spatial component.
             go.spatial = new SimplestSpatialComponent();
             
+            // Create and add the rendering component, and bind its position
+            // to the spatial component.
             go.render = new SimplestSpriteRenderer();
             go.render.addBinding("position", "@spatial.position");
             
+            // Finally, create the mouse following component. Notice we don't
+            // have a slot on the SimplestDemoGameObject class for it, so we
+            // add it via addComponent. It'll update the spatial's position as
+            // the mouse moves.
             const mfc:SimplestMouseFollowComponent = new SimplestMouseFollowComponent();
             mfc.targetProperty = "@spatial.position";
             go.addComponent(mfc, "mouse");
             
+            // Finally, get the GO going.
             go.initialize();
             
             return go;
         }
         
         /**
+         * ## Make Gem
          * Create a gem at a given point. Gems are identical to the game
          * object we created in the BindingDemoScene. The only difference
          * is that we set the position based on the pos parameter, and
@@ -121,7 +138,6 @@ package demos.demo_04_circlePickup
          */
         public function makeGem(pos:Point):SimplestDemoGameObject
         {
-            // Create the mouse follower.
             var go:SimplestDemoGameObject = new SimplestDemoGameObject();
             go.owningGroup = this;
             
@@ -142,3 +158,5 @@ package demos.demo_04_circlePickup
         }
     }
 }
+// @docco-chapter 1. First Steps
+// @docco-order 8
