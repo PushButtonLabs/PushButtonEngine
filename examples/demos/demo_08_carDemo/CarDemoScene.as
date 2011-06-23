@@ -1,3 +1,7 @@
+/**
+ * Excruciating simple demo showing how we can implement a numerical 
+ * simulation of a car.
+ */
 package demos.demo_08_carDemo
 {
     import com.pblabs.core.PBGroup;
@@ -12,10 +16,7 @@ package demos.demo_08_carDemo
     import flash.text.TextFieldAutoSize;
     import flash.text.TextFormat;
     
-    /**
-     * Excruciating simple demo showing how we can implement a numerical 
-     * simulation of a car.
-     */
+    // ## Implementation
     public class CarDemoScene extends PBGroup implements ITicked
     {
         [Inject]
@@ -52,6 +53,7 @@ package demos.demo_08_carDemo
          */
         public var gasIndicator:TextField = new TextField();
         
+        // ## Initialize Demo
         public override function initialize():void
         {
             super.initialize();
@@ -71,6 +73,7 @@ package demos.demo_08_carDemo
         }
         
         /**
+         * ## Tick Handler
          * Every tick, if the A key is down, consume gas and add velocity. In
          * addition, apply drag and update our position based on velocity. Then
          * redraw the visuals.
@@ -91,6 +94,7 @@ package demos.demo_08_carDemo
             gasIndicator.text = "Gas: " + gas;
         }
         
+        // ## Circle Drawer
         public function redrawCircle():void
         {
             circleSprite.graphics.clear();
@@ -98,6 +102,7 @@ package demos.demo_08_carDemo
             circleSprite.graphics.drawCircle(100 + position / 10, stage.stageHeight / 2, stage.stageHeight / 4);            
         }
         
+        // ## Destroy Demo
         public override function destroy():void
         {
             timeManager.removeTickedObject(this);
@@ -109,3 +114,6 @@ package demos.demo_08_carDemo
         }
     }
 }
+
+// @docco-chapter 2. Building Gameplay
+// @docco-order 4

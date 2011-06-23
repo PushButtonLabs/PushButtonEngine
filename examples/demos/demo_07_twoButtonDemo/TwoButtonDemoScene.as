@@ -1,3 +1,7 @@
+/**
+ * Excruciatingly simple demo that shows how we can drive complex game 
+ * state from a few inputs using a truth table. 
+ */
 package demos.demo_07_twoButtonDemo
 {
     import com.pblabs.core.PBGroup;
@@ -9,11 +13,8 @@ package demos.demo_07_twoButtonDemo
     import flash.display.DisplayObject;
     import flash.display.Sprite;
     import flash.display.Stage;
-    
-    /**
-     * Excruciatingly simple demo that shows how we can drive complex game 
-     * state from a few inputs using a truth table. 
-     */
+
+    // ## Implementation
     public class TwoButtonDemoScene extends PBGroup implements ITicked
     {
         [Inject]
@@ -48,6 +49,7 @@ package demos.demo_07_twoButtonDemo
          */
         public var circleSprite:Sprite = new Sprite();
         
+        // ## Initialize Demo
         public override function initialize():void
         {
             super.initialize();
@@ -60,6 +62,7 @@ package demos.demo_07_twoButtonDemo
         }
         
         /**
+         * ## Tick Handler
          * Treating A and S as inputs, look up the right position in the truth
          * table and set our state. Then redraw our visuals.
          */
@@ -74,6 +77,7 @@ package demos.demo_07_twoButtonDemo
         }
         
         /**
+         * ## Circle Drawer
          * Draw a circle for each state in the state vector. Green if true, red
          * if false.
          */
@@ -88,6 +92,7 @@ package demos.demo_07_twoButtonDemo
             }
         }
         
+        // ## Destroy Demo        
         public override function destroy():void
         {
             timeManager.removeTickedObject(this);
@@ -98,3 +103,6 @@ package demos.demo_07_twoButtonDemo
         }
     }
 }
+
+// @docco-chapter 2. Building Gameplay
+// @docco-order 3

@@ -1,3 +1,8 @@
+/**
+ * Excruciating simple, self-contained demo showing how you can drive game
+ * state off of a button. Does not use any components at all, demonstrating
+ * a convenient way to build simple gameplay prototypes. 
+ */
 package demos.demo_06_oneButtonDemo
 {
     import com.pblabs.PBUtil;
@@ -10,11 +15,7 @@ package demos.demo_06_oneButtonDemo
     import flash.display.Sprite;
     import flash.display.Stage;
     
-    /**
-     * Excruciating simple, self-contained demo showing how you can drive game
-     * state off of a button. Does not use any components at all, demonstrating
-     * a convenient way to build simple gameplay prototypes. 
-     */
+    // ## Implementation
     public class OneButtonDemoScene extends PBGroup implements ITicked
     {
         [Inject]
@@ -37,7 +38,7 @@ package demos.demo_06_oneButtonDemo
         public var circleSprite:Sprite = new Sprite();
         
         /**
-         * Initialize the demo.
+         * ## Initialize Demo
          */
         public override function initialize():void
         {
@@ -51,6 +52,7 @@ package demos.demo_06_oneButtonDemo
         }
         
         /**
+         * ## Tick Handler
          * On every tick, we sample the state and update our visuals.
          */
         public function onTick():void
@@ -61,6 +63,7 @@ package demos.demo_06_oneButtonDemo
         }
         
         /**
+        * ## Circle Drawer
          * Simple method to display a circle in the center of the stage. 
          */
         public function redrawCircle():void
@@ -75,6 +78,7 @@ package demos.demo_06_oneButtonDemo
         }
         
         /**
+        * ## Tear Down Demo
          * Clean everything up.
          */
         public override function destroy():void
@@ -87,3 +91,6 @@ package demos.demo_06_oneButtonDemo
         }
     }
 }
+
+// @docco-chapter 2. Building Gameplay
+// @docco-order 2

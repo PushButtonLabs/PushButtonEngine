@@ -1,3 +1,28 @@
+/**
+ * This demo is identical to the CirclePickupScene, but shows how we can use
+ * the TimeManager instead of directly listening for ENTER_FRAME events.
+ * 
+ * Why would we want to do this?
+ * 
+ * Because the TimeManager gives us a better model for building our game's
+ * simulation, one that works more reliably even if the game is running slow
+ * or fast. It gives us two kinds of callbacks, ticks and frames. Ticks are
+ * guaranteed to be run at 32Hz, so they are a good basis for building game
+ * logic. Frames are called every time Flash renders, so they let us do
+ * visual rendering in a specific place.
+ * 
+ * Using the TimeManager, we can also pause, slow down, or speed up our game's
+ * logic without having to worry about our rendering code getting in the way.
+ * 
+ * The TimeManager also lets us assign a priority to things that listen to
+ * frames or ticks, so that we can e.g. make sure scene rendering code
+ * is run after all the individual bits of logic that update the positions
+ * of all the things in the scene.
+ * 
+ * To demonstrate how this is handy, we get rid of the GemManager, and fold
+ * its code right into the scene by implementing the ITicked interface and
+ * adding ourselves to the TimeManager.
+ */
 package demos.demo_05_circlePickupWithTimeManager
 {
     import com.pblabs.core.PBGameObject;
@@ -14,31 +39,10 @@ package demos.demo_05_circlePickupWithTimeManager
     import flash.geom.Point;
     import demos.SimpleDemoGameObject;
     
-    /**
-     * This demo is identical to the CirclePickupScene, but shows how we can use
-     * the TimeManager instead of directly listening for ENTER_FRAME events.
-     * 
-     * Why would we want to do this?
-     * 
-     * Because the TimeManager gives us a better model for building our game's
-     * simulation, one that works more reliably even if the game is running slow
-     * or fast. It gives us two kinds of callbacks, ticks and frames. Ticks are
-     * guaranteed to be run at 32Hz, so they are a good basis for building game
-     * logic. Frames are called every time Flash renders, so they let us do
-     * visual rendering in a specific place.
-     * 
-     * Using the TimeManager, we can also pause, slow down, or speed up our game's
-     * logic without having to worry about our rendering code getting in the way.
-     * 
-     * The TimeManager also lets us assign a priority to things that listen to
-     * frames or ticks, so that we can e.g. make sure scene rendering code
-     * is run after all the individual bits of logic that update the positions
-     * of all the things in the scene.
-     * 
-     * To demonstrate how this is handy, we get rid of the GemManager, and fold
-     * its code right into the scene by implementing the ITicked interface and
-     * adding ourselves to the TimeManager.
-     */
+    // ## Implementation
+    // 
+    // Notice we implement ITicked so that we can add ourselves to the 
+    // TimeManager directly.
     public class CirclePickupWithTimeManagerScene extends PBGroup implements ITicked
     {
         // You will recognize this code from the GemManager in the previous
@@ -51,10 +55,15 @@ package demos.demo_05_circlePickupWithTimeManager
         [Inject]
         public var stage:Stage;
         
-        // Get the root group's TimeManager (instantiated in PBEDemos.as)
+        // Get the root group's TimeManager (instantiated in PBEDemos.as). The
+        // TimeManager provides callbacks as frames and ticks occur, lets you 
+        // schedule callbacks, allows scaling/pausing time, and does all this 
+        // much more cheaply than the usual event listener/setTimeout patterns
+        // found in AS3 projects.
         [Inject]
         public var timeManager:TimeManager;
         
+        // ## Initialize Demo
         public override function initialize():void
         {
             super.initialize();
@@ -75,6 +84,7 @@ package demos.demo_05_circlePickupWithTimeManager
             timeManager.addTickedObject(this);
         }
         
+        // ## Tear Down Demo
         public override function destroy():void
         {
             timeManager.removeTickedObject(this);
@@ -83,6 +93,7 @@ package demos.demo_05_circlePickupWithTimeManager
         }
         
         /**
+         * ## Tick Handler
          * Called by the TimeManager 32 times per second. Ideal place to run
          * our game logic.
          */
@@ -106,6 +117,7 @@ package demos.demo_05_circlePickupWithTimeManager
         } 
         
         /**
+         * ## Make Mouse Follower
          * Creates the mouse follower game object. Same as in previous demos.
          */
         public function makeMouseFollower():SimpleDemoGameObject
@@ -129,6 +141,7 @@ package demos.demo_05_circlePickupWithTimeManager
         }
         
         /**
+        * ## Make Gem
          * Creates the gem game object. Same as in previous demos.
          */
         public function makeGem(pos:Point):SimpleDemoGameObject
@@ -151,3 +164,6 @@ package demos.demo_05_circlePickupWithTimeManager
         }
     }
 }
+
+// @docco-chapter 2. Building Gameplay
+// @docco-order 1
